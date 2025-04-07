@@ -1,108 +1,283 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .checkout-container {
-    max-width: 800px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f3fff4;
+}
+
+.checkout-form {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.checkout-form h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4caf50;
+}
+
+.form-group .error {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.name-group,
+.city-zip {
+  display: flex;
+  gap: 20px;
+}
+
+.name-group .form-group,
+.city-zip .form-group {
+  flex: 1;
+}
+
+.address-group {
+  margin-bottom: 20px;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-group label {
+  font-weight: 500;
+  color: #333;
+}
+
+.checkbox-group input {
+  width: auto;
+}
+
+.order-summary {
+  margin-top: 30px;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+.order-summary h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.cart-items {
+  margin-bottom: 15px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.summary-details {
+  margin-top: 15px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 1rem;
+  color: #666;
+}
+
+.summary-row.total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #e63946;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.pay-button {
+  flex: 1;
+  padding: 12px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.pay-button:hover {
+  background-color: #388e3c;
+  transform: translateY(-1px);
+}
+
+.pay-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.back-to-shop {
+  flex: 1;
+  display: inline-block;
+  padding: 12px;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 8px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.back-to-shop:hover {
+  background-color: #d0d0d0;
+  transform: translateY(-1px);
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 40px 20px;
+  background: #f8f8f8;
+  border-radius: 12px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.empty-cart h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.empty-cart p {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.order-confirmation {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.order-confirmation h2 {
+  font-size: 2rem;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.order-confirmation p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 1000;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .checkout-container {
+    padding: 15px;
+  }
+
+  .checkout-form,
+  .order-confirmation {
     padding: 20px;
   }
-  
-  header {
-    padding: 20px 0;
-    border-bottom: 1px solid #eee;
-    margin-bottom: 30px;
+
+  .name-group,
+  .city-zip {
+    flex-direction: column;
+    gap: 15px;
   }
-  
-  h1, h2, h3 {
-    color: #333;
-  }
-  
-  .checkout-form {
-    padding: 20px;
-    background: #5e4141;
-    border-radius: 5px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
+
   .form-group input,
-  .form-group textarea,
   .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px;
     font-size: 1rem;
   }
-  
-  .form-group textarea {
-    height: 100px;
-    resize: vertical;
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
   }
-  
-  .cart-summary {
-    margin: 20px 0;
+
+  .pay-button,
+  .back-to-shop {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .order-summary {
     padding: 15px;
-    background: white;
-    border: 1px solid #eee;
-    border-radius: 5px;
   }
-  
+
   .cart-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
-  
-  .total {
-    text-align: right;
-    padding: 10px 0;
-  }
-  
-  .submit-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #e63946;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .submit-button:hover {
-    background-color: #b32d38;
-  }
-  
-  .back-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #457b9d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .back-button:hover {
-    background-color: #1d3557;
-  }
-  
-  .confirmation {
-    padding: 20px;
-    background: #f8f8f8;
-    border-radius: 5px;
-    text-align: center;
-  }
-  
-  .confirmation p {
-    margin: 10px 0;
-  }
+}

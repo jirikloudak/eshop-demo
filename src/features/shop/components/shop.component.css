@@ -262,3 +262,46 @@ h3 {
   .product-card:hover .product-link h3 {
     color: #4caf50; /* Green on hover to indicate clickable */
   }
+
+  @media (max-width: 768px) {
+    .filters {
+        flex-direction: column; /* Stack the filters vertically */
+        align-items: flex-start; /* Align items to the left */
+        gap: 15px; /* Add space between the category and sort filters */
+        padding: 15px; /* Adjust padding for mobile */
+    }
+
+    .category-filter, .sort-filter {
+        width: 100%; /* Make each filter take the full width */
+        justify-content: space-between; /* Space out the label and dropdown */
+    }
+
+    .category-filter select, .sort-filter select {
+        width: 100%; /* Make dropdowns full-width */
+        max-width: 100%; /* Ensure they don't overflow */
+        padding: 10px; /* Increase padding for better touch target */
+        font-size: 1rem; /* Ensure font size is readable */
+    }
+
+    .category-filter label, .sort-filter label {
+        font-size: 1rem; /* Ensure label font size is readable */
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Smaller cards on mobile */
+        gap: 20px; /* Reduce gap between cards */
+    }
+
+    .product-card {
+        padding: 10px; /* Reduce padding inside cards */
+    }
+
+    .product-image {
+        height: 150px; /* Reduce image height for mobile */
+    }
+
+    .cart-panel {
+        width: 100%; /* Full width on mobile */
+        max-width: 100%;
+    }
+}

@@ -116,3 +116,9 @@ header::after {
     background-color: #0277bd; /* Darker blue on hover */
     transform: translateY(-2px); /* Slight lift effect */
   }
+
+  @media (max-width: 768px) {
+    h1 {
+        display: none;
+    }
+}

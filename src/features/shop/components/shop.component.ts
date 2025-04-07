@@ -21,7 +21,7 @@ export class ShopComponent {
   showCart = false;
   categories: string[] = [];
   categoryControl = new FormControl('All');
-  sortControl = new FormControl('name-asc'); 
+  sortControl = new FormControl('default'); 
 
   constructor(
     private cartService: CartService,
@@ -90,6 +90,8 @@ export class ShopComponent {
 
     this.filteredProducts = [...filtered].sort((a, b) => {
       switch (sortOption) {
+        case 'default':
+          return a.id - b.id;
         case 'name-asc':
           return a.name.localeCompare(b.name);
         case 'name-desc':
