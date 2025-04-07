@@ -1,0 +1,81 @@
+<div class="checkout-container">
+    <header>
+      <h1>Checkout</h1>
+    </header>
+  
+    <main>
+      <!-- Checkout Form -->
+      <div *ngIf="!submittedOrder" class="checkout-form">
+        <h2>Shipping Information</h2>
+        <form (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="customerName">Full Name:</label>
+            <input
+              id="customerName"
+              name="customerName"
+              [(ngModel)]="checkoutForm.customerName"
+              required
+              placeholder="Enter your full name"
+            >
+          </div>
+  
+          <div class="form-group">
+            <label for="address">Shipping Address:</label>
+            <textarea
+              id="address"
+              name="address"
+              [(ngModel)]="checkoutForm.address"
+              required
+              placeholder="Enter your shipping address"
+            ></textarea>
+          </div>
+  
+          <div class="form-group">
+            <label for="paymentMethod">Payment Method:</label>
+            <select
+              id="paymentMethod"
+              name="paymentMethod"
+              [(ngModel)]="checkoutForm.paymentMethod"
+              required
+            >
+              <option value="Credit Card">Credit Card</option>
+              <option value="PayPal">PayPal</option>
+              <option value="Cash on Delivery">Cash on Delivery</option>
+            </select>
+          </div>
+  
+          <!-- Cart Summary -->
+          <div class="cart-summary">
+            <h3>Your Cart</h3>
+            <div *ngIf="cartItems.length === 0">
+              <p>Your cart is empty.</p>
+            </div>
+            <div *ngIf="cartItems.length > 0">
+              <div *ngFor="let item of cartItems" class="cart-item">
+                <span>{{ item.product.name }} × {{ item.quantity }}</span>
+                <span>$ {{ (item.product.price * item.quantity).toFixed(2) }}</span>
+              </div>
+              <div class="total">
+                <strong>Total: $ {{ cartTotal.toFixed(2) }}</strong>
+              </div>
+            </div>
+          </div>
+  
+          <button type="submit" class="submit-button">Place Order</button>
+          <button type="button" class="back-button" (click)="goBackToShop()">Back to Shop</button>
+        </form>
+      </div>
+  
+      <!-- Order Confirmation -->
+      <div *ngIf="submittedOrder" class="confirmation">
+        <h2>Order Placed Successfully!</h2>
+        <p>Order ID: {{ submittedOrder.id }}</p>
+        <p>Customer: {{ submittedOrder.customerName }}</p>
+        <p>Address: {{ submittedOrder.address }}</p>
+        <p>Payment: {{ submittedOrder.paymentMethod }}</p>
+        <p>Total: $ {{ submittedOrder.total.toFixed(2) }}</p>
+        <p>Date: {{ submittedOrder.date | date:'medium' }}</p>
+        <button class="back-button" (click)="goBackToShop()">Continue Shopping</button>
+      </div>
+    </main>
+  </div>

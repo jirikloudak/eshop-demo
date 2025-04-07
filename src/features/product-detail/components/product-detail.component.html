@@ -1,0 +1,87 @@
+<div class="product-detail-container">
+  <app-header (toggleCartEvent)="toggleCart()"></app-header>
+      
+    <div *ngIf="!product" class="not-found">
+      <h2>Product Not Found</h2>
+      <p>The product you're looking for does not exist.</p>
+      <a routerLink="/shop" class="back-to-shop">Back to Shop</a>
+    </div>
+  
+    <div *ngIf="product" class="product-detail">
+      <!-- Left Side: Product Image -->
+      <div class="product-image">
+        <img [src]="product.imageUrl" [alt]="product.name">
+      </div>
+  
+      <!-- Right Side: Product Info -->
+      <div class="product-info">
+        <h1 class="product-name">{{ product.name }}</h1>
+        <p class="product-description" *ngIf="product.description">{{ product.description }}</p>
+        <div class="product-details">
+          <div class="info-item">
+            <span class="label">Brand:</span>
+            <span class="value">{{ product.brand || 'N/A' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Color:</span>
+            <span class="value">{{ product.color || 'N/A' }}</span>
+          </div>
+        </div>
+        <div class="info-item stock">
+          <span class="label">Stock:</span>
+          <span class="value" [ngClass]="{'out-of-stock': product.stock === 0}">
+            {{ product.stock > 0 ? product.stock : 'Out of stock' }}
+          </span>
+        </div>
+        <div class="product-price">
+          <span class="label">Price:</span>
+          <span class="value">$ {{ product.price.toFixed(2) }}</span>
+        </div>
+        <div class="actions">
+          <div class="quantity-selector">
+            <button (click)="decrementQuantity()" [disabled]="quantity <= 1">-</button>
+            <span>{{ quantity }}</span>
+            <button (click)="incrementQuantity()" [disabled]="quantity >= product.stock">+</button>
+          </div>
+          <button class="add-to-cart" (click)="addToCart()" [disabled]="product.stock === 0">
+            Add to Cart
+          </button>
+          
+          <a routerLink="/shop" class="back-to-shop">Back to Shop</a>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="showCart" class="cart-overlay">
+      <div class="cart-panel">
+        <div class="cart-header">
+          <h2>Your Cart</h2>
+          <button class="close-cart" (click)="toggleCart()">×</button>
+        </div>
+        
+          <div class="cart-body">
+            <p *ngIf="cart.length === 0" class="empty-cart">Your cart is empty</p>
+            
+            <div *ngIf="cart.length > 0" class="cart-items">
+              <div *ngFor="let item of cart" class="cart-item">
+                <img [src]="item.product.imageUrl" [alt]="item.product.name" class="cart-item-image">
+                <div class="cart-item-details">
+                  <h3>{{ item.product.name }}</h3>
+                  <p>$ {{ item.product.price.toFixed(2) }} × {{ item.quantity }}</p>
+                </div>
+                <div class="cart-item-controls">
+                  <button (click)="decreaseQuantity(item)">-</button>
+                  <span>{{ item.quantity }}</span>
+                  <button (click)="increaseQuantity(item)">+</button>
+                </div>
+              </div>
+            </div>
+        </div>
+        
+        <div *ngIf="cart.length > 0" class="cart-summary">
+          <p>Total: <strong>$ {{ cartTotal.toFixed(2) }}</strong></p>
+          <button class="checkout-button" [routerLink]="['/checkout']">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
