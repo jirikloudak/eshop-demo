@@ -58,7 +58,7 @@ export const defaultProducts: Product[] = [
     category: 'Audio', 
     price: 79.99, 
     stock: 20, 
-    imageUrl: 'https://images.unsplash.com/photo-1587574293340-ec32352a16c9?w=600',
+    imageUrl: 'https://tse4.mm.bing.net/th?id=OIP.ME7w8biTCoGCGAD20L1S6wHaHX&w=471&h=471&c=7',
     color: 'Blue',
     brand: 'SoundWave'
   },
@@ -116,7 +116,7 @@ export const defaultProducts: Product[] = [
     category: 'Toys', 
     price: 232.99, 
     stock: 5, 
-    imageUrl: 'https://images.unsplash.com/photo-1592417817039-2c69eaa43df6?w=600',
+    imageUrl: 'https://tse3.mm.bing.net/th?id=OIP.1ukXH_NNL6COdBN7hKEC3gHaHa&w=474&h=474&c=7',
     color: 'Red',
     brand: 'PlayBot'
   },
