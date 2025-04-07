@@ -1,5 +1,5 @@
 <div class="checkout-container">
-  <app-header (toggleCartEvent)="toggleCart()"></app-header>
+  <app-header></app-header>
 
   <div *ngIf="cart.length === 0 && !orderConfirmed" class="empty-cart">
     <h2>Your Cart is Empty</h2>
@@ -163,38 +163,5 @@
       </div>
     </div>
     <a routerLink="/shop" class="back-to-shop">Back to Shop</a>
-  </div>
-
-  <div *ngIf="showCart" class="cart-overlay">
-    <div class="cart-panel">
-      <div class="cart-header">
-        <h2>Your Cart</h2>
-        <button class="close-cart" (click)="toggleCart()">×</button>
-      </div>
-      
-        <div class="cart-body">
-          <p *ngIf="cart.length === 0" class="empty-cart">Your cart is empty</p>
-          
-          <div *ngIf="cart.length > 0" class="cart-items">
-            <div *ngFor="let item of cart" class="cart-item">
-              <img [src]="item.product.imageUrl" [alt]="item.product.name" class="cart-item-image">
-              <div class="cart-item-details">
-                <h3>{{ item.product.name }}</h3>
-                <p>$ {{ item.product.price.toFixed(2) }} × {{ item.quantity }}</p>
-              </div>
-              <div class="cart-item-controls">
-                <button >-</button>
-                <span>{{ item.quantity }}</span>
-                <button >+</button>
-              </div>
-            </div>
-          </div>
-      </div>
-      
-      <div *ngIf="cart.length > 0" class="cart-summary">
-        <p>Total: <strong>$ {{ cartTotal.toFixed(2) }}</strong></p>
-        <button class="checkout-button" [routerLink]="['/checkout']">Checkout</button>
-      </div>
-    </div>
   </div>
 </div>

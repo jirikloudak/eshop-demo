@@ -5,7 +5,7 @@
   </div>
   <h1 class="shop-title">Demo E-Shop</h1>
   <div class="header-right">
-    <div class="cart-widget" (click)="toggleCart()">
+    <div class="cart-widget" *ngIf="shouldShowCart()" (click)="toggleCart()">
       🛒 Cart 
       <span *ngIf="totalItems > 0" class="cart-count">{{ totalItems }}</span>
     </div>

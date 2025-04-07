@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CartService } from '@core/services/cart.service';
 
 @Component({
@@ -15,14 +15,17 @@ export class HeaderComponent {
 
   totalItems: number = 0;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService, private router: Router) {
     this.cartService.cart$.subscribe(cart => {
       this.totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      console.log('Cart updated in HeaderComponent:', cart, 'Total Items:', this.totalItems);
     });
   }
 
   toggleCart(): void {
     this.toggleCartEvent.emit();
+  }
+
+  shouldShowCart(): boolean {
+    return this.router.url !== '/checkout';
   }
 }
