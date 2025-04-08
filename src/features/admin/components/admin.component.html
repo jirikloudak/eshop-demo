@@ -18,30 +18,35 @@
             <div class="product-image-container">
               <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
             </div>
-            <div class="product-details">
-              <h3>{{ product.name }}</h3>
-              <div class="product-info">
-                <span class="info-label">Category:</span> {{ product.category }}
+            <div class="product-content">
+              <div class="product-details">
+                <h3 class="product-name">{{ product.name }}</h3>
+                <div class="product-info-container">
+                  <div class="product-info">
+                    <span class="info-label">Category:</span> {{ product.category }}
+                  </div>
+                  <div class="product-info">
+                    <span class="info-label">Price:</span> $ {{ product.price.toFixed(2) }}
+                  </div>
+                  <div class="product-info">
+                    <span class="info-label">Stock:</span> {{ product.stock }}
+                  </div>
+                  <div class="product-info" *ngIf="product.color">
+                    <span class="info-label">Color:</span> {{ product.color }}
+                  </div>
+                  <div class="product-info description-container" *ngIf="product.description">
+                    <span class="info-label description-label">Description:</span>
+                    <div class="description-text">{{ product.description }}</div>
+                  </div>
+                  <div class="product-info" *ngIf="product.brand">
+                    <span class="info-label">Brand:</span> {{ product.brand }}
+                  </div>
+                </div>
               </div>
-              <div class="product-info">
-                <span class="info-label">Price:</span> $ {{ product.price.toFixed(2) }}
+              <div class="product-actions">
+                <button class="edit-button" (click)="editProduct(product)">Edit</button>
+                <button class="remove-button" (click)="removeProduct(product.id)">Remove</button>
               </div>
-              <div class="product-info">
-                <span class="info-label">Stock:</span> {{ product.stock }}
-              </div>
-              <div class="product-info" *ngIf="product.color">
-                <span class="info-label">Color:</span> {{ product.color }}
-              </div>
-              <div class="product-info" *ngIf="product.description">
-                <span class="info-label">Description:</span> {{ product.description }}
-              </div>
-              <div class="product-info" *ngIf="product.brand">
-                <span class="info-label">Brand:</span> {{ product.brand }}
-              </div>
-            </div>
-            <div class="product-actions">
-              <button class="edit-button" (click)="editProduct(product)">Edit</button>
-              <button class="remove-button" (click)="removeProduct(product.id)">Remove</button>
             </div>
           </div>
         </div>
