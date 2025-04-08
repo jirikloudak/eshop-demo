@@ -83,4 +83,8 @@ export class ProductDetailComponent implements OnInit {
   isInCart(): boolean {
     return this.product ? this.cartService.isInCart(this.product) : false;
   }
+
+  clearCart(): void {
+    this.cartService.clearCart();
+  }
 }

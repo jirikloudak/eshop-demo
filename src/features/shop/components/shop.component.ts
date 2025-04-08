@@ -109,4 +109,8 @@ export class ShopComponent {
       }
     });
   }
+
+  clearCart(): void{
+    this.cartService.clearCart();
+  }
 }
