@@ -58,7 +58,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.cartSubscription = this.cartService.cart$.subscribe(cart => {
       this.cart = cart;
-      console.log('Cart updated in CheckoutComponent:', this.cart);
       this.calculateTotals();
     });
     this.calculateTotals();
@@ -104,21 +103,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     // Validate the code
     if (code && this.specialOfferCodes[code]) {
       this.appliedOffer = this.specialOfferCodes[code];
-      this.calculateTotals();
     } else if (code) {
       this.appliedOffer = { type: 'invalid', description: 'Invalid special offer code.' };
-      this.calculateTotals();
     }
+    this.calculateTotals();
   }
 
   calculateTotals(): void {
     // Calculate subtotal
     this.cartSubtotal = this.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
-    console.log('Cart Subtotal:', this.cartSubtotal);
 
     // Calculate delivery fee
     const deliveryMethod = this.checkoutForm.get('deliveryMethod')?.value;
-    console.log('Delivery Method:', deliveryMethod);
     switch (deliveryMethod) {
       case 'branch':
         this.deliveryFee = 0;
@@ -132,7 +128,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       default:
         this.deliveryFee = 0;
     }
-    console.log('Delivery Fee:', this.deliveryFee);
     if (this.appliedOffer?.type === 'freeDelivery') {
       this.deliveryFee = 0;
     }
@@ -140,7 +135,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     // Calculate discounts
     const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
     const isStudent = this.checkoutForm.get('isStudent')?.value;
-    console.log('Payment Method:', paymentMethod, 'Is Student:', isStudent);
 
     this.creditCardDiscount = 0;
     this.studentDiscount = 0;
@@ -156,10 +150,13 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     if (!isStudent && this.appliedOffer) {
       if (this.appliedOffer.type === 'audioDiscount') {
-        // Assuming "audio" products have a specific identifier (e.g., name contains "Audio")
-        const audioSubtotal = this.cart
-          .filter(item => item.product.category.toLowerCase().includes('audio'))
-          .reduce((total, item) => total + (item.product.price * item.quantity), 0);
+        const audioItems = this.cart.filter(item => 
+          item.product.category && 
+          item.product.category.toLowerCase() === 'audio' // Exact match for "audio"
+        );
+        const audioSubtotal = audioItems.reduce((total, item) => 
+          total + (item.product.price * item.quantity), 0
+        );
         this.specialOfferDiscount = audioSubtotal * 0.20; // 20% discount on audio products
       } else if (this.appliedOffer.type === 'flatDiscount') {
         this.specialOfferDiscount = 200; // Flat $200 discount
@@ -173,21 +170,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.studentDiscount = (this.studentDiscount / totalDiscount) * this.cartSubtotal;
       this.specialOfferDiscount = (this.specialOfferDiscount / totalDiscount) * this.cartSubtotal;
     }
-    console.log('Discounts:', {
-      creditCardDiscount: this.creditCardDiscount,
-      studentDiscount: this.studentDiscount,
-      specialOfferDiscount: this.specialOfferDiscount
-    });
 
     // Calculate total
-    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount + this.specialOfferDiscount;
-    console.log('Total Calculation:', {
-      cartSubtotal: this.cartSubtotal,
-      deliveryFee: this.deliveryFee,
-      creditCardDiscount: this.creditCardDiscount,
-      studentDiscount: this.studentDiscount,
-      total: this.total
-    });
+    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount - this.specialOfferDiscount;
   }
 
   updateDeliveryFee(): void {

@@ -74,7 +74,7 @@ header::after {
 .cart-widget {
     cursor: pointer;
     padding: 8px 15px;
-    background-color: #70ff75;
+    background-color: #cfffc6;
     border-radius: 8px;
     font-weight: 600;
     color: #000000;
@@ -90,7 +90,7 @@ header::after {
 .cart-widget:hover {
     cursor: pointer;
     padding: 8px 15px;
-    background-color: #388e3c;
+    background-color: #8eee93;
     border-radius: 8px;
     font-weight: bold;
 }
