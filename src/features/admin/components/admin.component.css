@@ -421,3 +421,167 @@ h1 {
       opacity: 1;
   }
 }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .admin-container {
+      max-width: 100%;
+      padding: 15px;
+  }
+
+  .product-card {
+      flex-direction: column;
+      align-items: center;
+      min-height: auto;
+  }
+
+  .product-image-container {
+      width: 150px;
+      height: 150px;
+  }
+
+  .product-content {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .product-actions {
+      flex-direction: row;
+      align-items: center;
+      min-width: auto;
+      margin-top: 10px;
+  }
+
+  .edit-button,
+  .remove-button {
+      max-width: 90px;
+  }
+
+  .modal-content {
+      width: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+      flex-direction: column;
+      padding: 15px 0;
+  }
+
+  .header-actions {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 15px;
+  }
+
+  .add-button,
+  .back-button {
+      width: 100%;
+      max-width: 200px;
+  }
+
+  .product-image-container {
+      width: 120px;
+      height: 120px;
+  }
+
+  .product-name {
+      font-size: 1.1rem;
+  }
+
+  .product-info {
+      font-size: 0.9rem;
+  }
+
+  .modal-content {
+      width: 90%;
+      padding: 15px;
+  }
+
+  .modal-header {
+      padding: 10px 15px;
+  }
+
+  .modal-body {
+      padding: 15px;
+  }
+
+  .modal-actions {
+      padding: 10px 15px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+      padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-container {
+      padding: 10px;
+  }
+
+  .product-card {
+      padding: 15px;
+  }
+
+  .product-image-container {
+      width: 100px;
+      height: 100px;
+  }
+
+  .product-name {
+      font-size: 1rem;
+  }
+
+  .product-info {
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+  }
+
+  .description-text {
+      width: 100%;
+  }
+
+  .product-actions {
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .edit-button,
+  .remove-button {
+      width: 100%;
+      max-width: none;
+  }
+
+  .modal-content {
+      width: 95%;
+      padding: 10px;
+  }
+
+  .modal-header h2 {
+      font-size: 1.1rem;
+  }
+
+  .close-modal {
+      font-size: 1.2rem;
+  }
+
+  .form-group label {
+      font-size: 0.9rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+      font-size: 0.9rem;
+  }
+
+  .cancel-button,
+  .save-button {
+      padding: 8px 15px;
+      font-size: 0.9rem;
+  }
+}
