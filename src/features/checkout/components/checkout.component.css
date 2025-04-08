@@ -245,6 +245,18 @@
   font-weight: bold;
 }
 
+.offer-message {
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+.offer-message.success {
+  color: #28a745; /* Green for success */
+}
+
+.offer-message.error {
+  color: #dc3545; /* Red for error */
+}
 /* Mobile-specific styles */
 @media (max-width: 768px) {
   .checkout-container {

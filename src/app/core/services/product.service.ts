@@ -46,4 +46,17 @@ export class ProductService {
     );
     this.saveProducts();
   }
+
+  reduceStock(productId: number, quantity: number): void {
+    const product = this.products.find(p => p.id === productId);
+    if (product) {
+      product.stock = Math.max(0, product.stock - quantity); // Ensure stock doesn't go below 0
+      console.log(`Reduced stock for product ${productId}: ${product.stock} remaining`);
+    }
+  }
+
+  getStock(productId: number): number {
+    const product = this.products.find(p => p.id === productId);
+    return product ? product.stock : 0;
+  }
 }

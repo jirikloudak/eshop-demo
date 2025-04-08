@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CartService } from '@core/services/cart.service';
+import { ProductService } from '@core/services/product.service';
 import { CartItem } from '@core/models/cart-item.model';
 import { HeaderComponent } from '@core/components/header/header.component';
 import { Subscription } from 'rxjs';
@@ -23,12 +24,21 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   deliveryFee = 0;
   creditCardDiscount = 0;
   studentDiscount = 0;
+  specialOfferDiscount = 0;
   total = 0;
   orderDetails: any = {};
   private cartSubscription!: Subscription;
 
+  private specialOfferCodes: { [key: string]: { type: string, description: string } } = {
+    'FREESHIP8': { type: 'freeDelivery', description: 'Free Delivery Applied!' },
+    'AUDIO20PC': { type: 'audioDiscount', description: '20% Audio Discount Applied!' },
+    'FLAT200OF': { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' }
+  };
+  appliedOffer: { type: string, description: string } | null = null;
+
   constructor(
     private cartService: CartService,
+    private productService: ProductService,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef
   ) {
@@ -40,7 +50,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       zipCode: ['', Validators.required],
       deliveryMethod: ['branch'],
       paymentMethod: ['creditCard'],
-      isStudent: [false]
+      isStudent: [false],
+      specialOfferCode: ['']
     });
   }
 
@@ -51,6 +62,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.calculateTotals();
     });
     this.calculateTotals();
+
+    this.checkoutForm.get('specialOfferCode')?.valueChanges.subscribe(() => {
+      this.validateAndApplySpecialOffer();
+    });
+    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(() => {
+      this.validateAndApplySpecialOffer();
+      this.calculateTotals();
+    });
   }
 
   ngOnDestroy(): void {
@@ -62,6 +81,34 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   toggleCart(): void {
     this.showCart = !this.showCart;
     this.cdr.detectChanges();
+  }
+
+  validateAndApplySpecialOffer(): void {
+    const code = this.checkoutForm.get('specialOfferCode')?.value?.trim().toUpperCase();
+    const isStudent = this.checkoutForm.get('isStudent')?.value;
+
+    // Reset the applied offer
+    this.appliedOffer = null;
+    this.specialOfferDiscount = 0;
+
+    // If student discount is active, special offers cannot be applied
+    if (isStudent) {
+      if (code && this.specialOfferCodes[code]) {
+        this.checkoutForm.get('specialOfferCode')?.setValue(''); // Clear the code
+        alert('Special offer codes cannot be used with the student discount.');
+      }
+      this.calculateTotals();
+      return;
+    }
+
+    // Validate the code
+    if (code && this.specialOfferCodes[code]) {
+      this.appliedOffer = this.specialOfferCodes[code];
+      this.calculateTotals();
+    } else if (code) {
+      this.appliedOffer = { type: 'invalid', description: 'Invalid special offer code.' };
+      this.calculateTotals();
+    }
   }
 
   calculateTotals(): void {
@@ -86,6 +133,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.deliveryFee = 0;
     }
     console.log('Delivery Fee:', this.deliveryFee);
+    if (this.appliedOffer?.type === 'freeDelivery') {
+      this.deliveryFee = 0;
+    }
 
     // Calculate discounts
     const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
@@ -94,6 +144,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     this.creditCardDiscount = 0;
     this.studentDiscount = 0;
+    this.specialOfferDiscount = 0;
 
     if (paymentMethod === 'creditCard') {
       this.creditCardDiscount = this.cartSubtotal * 0.05;
@@ -103,19 +154,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.studentDiscount = this.cartSubtotal * 0.15;
     }
 
+    if (!isStudent && this.appliedOffer) {
+      if (this.appliedOffer.type === 'audioDiscount') {
+        // Assuming "audio" products have a specific identifier (e.g., name contains "Audio")
+        const audioSubtotal = this.cart
+          .filter(item => item.product.category.toLowerCase().includes('audio'))
+          .reduce((total, item) => total + (item.product.price * item.quantity), 0);
+        this.specialOfferDiscount = audioSubtotal * 0.20; // 20% discount on audio products
+      } else if (this.appliedOffer.type === 'flatDiscount') {
+        this.specialOfferDiscount = 200; // Flat $200 discount
+      }
+    }
+
     // Ensure discounts don't exceed subtotal
-    const totalDiscount = this.creditCardDiscount + this.studentDiscount;
+    const totalDiscount = this.creditCardDiscount + this.studentDiscount + this.specialOfferDiscount;
     if (totalDiscount > this.cartSubtotal) {
       this.creditCardDiscount = (this.creditCardDiscount / totalDiscount) * this.cartSubtotal;
       this.studentDiscount = (this.studentDiscount / totalDiscount) * this.cartSubtotal;
+      this.specialOfferDiscount = (this.specialOfferDiscount / totalDiscount) * this.cartSubtotal;
     }
     console.log('Discounts:', {
       creditCardDiscount: this.creditCardDiscount,
-      studentDiscount: this.studentDiscount
+      studentDiscount: this.studentDiscount,
+      specialOfferDiscount: this.specialOfferDiscount
     });
 
     // Calculate total
-    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount;
+    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount + this.specialOfferDiscount;
     console.log('Total Calculation:', {
       cartSubtotal: this.cartSubtotal,
       deliveryFee: this.deliveryFee,
@@ -135,6 +200,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   confirmOrder(): void {
     if (this.checkoutForm.valid) {
+      for (const item of this.cart) {
+        const availableStock = this.productService.getStock(item.product.id);
+        if (item.quantity > availableStock) {
+          alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
+          return;
+        }
+      }
+
       this.orderDetails = {
         ...this.checkoutForm.value,
         cart: this.cart,
@@ -144,6 +217,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         studentDiscount: this.studentDiscount,
         total: this.total
       };
+      this.cart.forEach(item => {
+        this.productService.reduceStock(item.product.id, item.quantity);
+      });
+      
       this.cartService.clearCart();
       this.orderConfirmed = true;
       if (this.cartSubscription) {

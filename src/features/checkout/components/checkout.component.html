@@ -75,6 +75,14 @@
         </select>
       </div>
 
+      <div class="form-group">
+        <label for="specialOfferCode">Special Offer Code</label>
+        <input id="specialOfferCode" formControlName="specialOfferCode" type="text" placeholder="Enter your code">
+        <div *ngIf="appliedOffer" class="offer-message" [ngClass]="{'error': appliedOffer.type === 'invalid', 'success': appliedOffer.type !== 'invalid'}">
+          {{ appliedOffer.description }}
+        </div>
+      </div>
+
       <!-- Student Discount -->
       <div class="form-group checkbox-group">
         <label>

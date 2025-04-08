@@ -3,7 +3,11 @@
   <div class="header-left">
     <button class="admin-button" [routerLink]="['/admin']">Admin Panel</button>
   </div>
-  <h1 class="shop-title">Demo E-Shop</h1>
+  <a [routerLink]="['/']" class="shop-link">
+    <h1 class="shop-title">
+      Demo E-Shop
+    </h1>
+  </a>
   <div class="header-right">
     <div class="cart-widget" *ngIf="shouldShowCart()" (click)="toggleCart()">
       🛒 Cart 

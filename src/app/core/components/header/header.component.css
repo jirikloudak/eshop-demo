@@ -54,6 +54,11 @@ header::after {
     text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3);
   }
 
+  .shop-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
 .header-left {
     flex: 1;
     display: flex;
