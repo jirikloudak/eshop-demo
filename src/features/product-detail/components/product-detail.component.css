@@ -1,3 +1,10 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 .product-detail-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -6,7 +13,7 @@
 }
 
 .product-detail {
-  display: flex;
+  display:flex;
   gap: 40px; /* Added to match the spacing style in ShopComponent */
   background: #ffffff;
   border-radius: 12px;
