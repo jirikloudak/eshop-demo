@@ -79,6 +79,10 @@ export class ShopComponent {
     return this.cartService.isInCart(product);
   }
 
+  selectCategory(category: string): void {
+    this.categoryControl.setValue(category);
+  }
+
   applyFiltersAndSort(): void {
     let filtered = this.products;
     const selectedCategory = this.categoryControl.value;

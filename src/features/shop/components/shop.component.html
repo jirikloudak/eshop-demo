@@ -1,13 +1,18 @@
 <div class="e-shop-container">
   <app-header (toggleCartEvent)="toggleCart()"></app-header>
 
-    <div class="filters">
-      <div class="category-filter">
-        <label for="category">Category:</label>
-        <select id="category" [formControl]="categoryControl">
-          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-        </select>
-      </div>
+  <div class="shop-layout">
+    <!-- Categories Sidebar -->
+    <aside class="categories-sidebar">
+      <h3>Categories</h3>
+      <ul class="category-list">
+        <li *ngFor="let category of categories" 
+            [class.active]="categoryControl.value === category"
+            (click)="selectCategory(category)">
+          {{ category }}
+        </li>
+      </ul>
+      <!-- Moved sort-filter here -->
       <div class="sort-filter">
         <label for="sort">Sort by:</label>
         <select id="sort" [formControl]="sortControl">
@@ -20,24 +25,32 @@
           <option value="stock-desc">Stock (High to Low)</option>
         </select>
       </div>
-    </div>
-  
-    <main>
-      <div class="products-grid">
-        <div *ngFor="let product of filteredProducts" class="product-card">
-          <a [routerLink]="['/product', product.id]" class="product-link">
-            <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
-            <h3>{{ product.name }}</h3>
-            <p class="price">{{ product.price.toFixed(2) }},-</p>
-            <p class="stock-status" [ngClass]="{'out-of-stock': product.stock === 0}">
-              {{ product.stock > 0 ? 'In stock: ' + product.stock : 'Out of stock' }}
-            </p>
-          </a>
-          <button *ngIf="!isInCart(product)" class="add-to-cart" (click)="addToCart(product)" [disabled]="product.stock === 0">Add to Cart</button>
-          <span *ngIf="isInCart(product)" class="added-to-cart">Added to Cart</span>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+
+      <main>
+        <div class="products-grid">
+          <div *ngFor="let product of filteredProducts" class="product-card">
+            <a [routerLink]="['/product', product.id]" class="product-link">
+              <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+              <h3>{{ product.name }}</h3>
+              <p class="price">{{ product.price.toFixed(2) }},-</p>
+              <p class="stock-status" [ngClass]="{'out-of-stock': product.stock === 0}">
+                {{ product.stock > 0 ? 'In stock: ' + product.stock : 'Out of stock' }}
+              </p>
+            </a>
+            <button *ngIf="!isInCart(product)" class="add-to-cart" 
+                    (click)="addToCart(product)" 
+                    [disabled]="product.stock === 0">Add to Cart</button>
+            <span *ngIf="isInCart(product)" class="added-to-cart">Added to Cart</span>
+          </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </div>
+  </div>
   
     <div *ngIf="showCart" class="cart-overlay">
       <div class="cart-panel">
