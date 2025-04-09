@@ -34,7 +34,6 @@ export class ShopComponent {
 
   loadProducts(): void {
     this.products = this.productService.getProducts();
-    // Extract unique categories
     this.categories = ['All', ...new Set(this.products.map(product => product.category))];
     this.applyFiltersAndSort();
   }
