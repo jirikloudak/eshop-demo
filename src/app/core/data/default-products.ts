@@ -10,7 +10,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse4.mm.bing.net/th?id=OIP.UhmfxQdpMsf_W5b_5x4DNAHaHa&w=474&h=474&c=7',
     color: 'Black',
     description: 'Vysoce kvalitní sluchátka přes uši s pokročilou technologií potlačení hluku, která zajišťuje nerušený poslech i v hlučném prostředí. Sluchátka jsou vybavena měkkými náušníky z paměťové pěny, která se přizpůsobí tvaru vaší hlavy, a výkonnými 40mm měniči, které poskytují hluboké basy, čisté středy a jasné výšky. Díky dlouhé výdrži baterie až 30 hodin a možnosti rychlého nabíjení jsou ideální pro cestování, práci i relaxaci.',
-    brand: 'SoundMaster'
+    brand: 'SoundMaster',
+    default: true
   },
   { 
     id: 2, 
@@ -21,7 +22,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse1.mm.bing.net/th?id=OIP.3BQZPPh2YZem1c9YXjvB5QHaHa&w=474&h=474&c=7',
     color: 'Gray',
     description: 'Lehká bezdrátová myš s ergonomickým designem navržená pro celodenní pohodlné používání. Nabízí přesné snímání pohybu díky optickému senzoru s rozlišením až 1600 DPI. Díky tichým tlačítkům a spolehlivému bezdrátovému připojení přes USB přijímač je ideální pro kancelářské prostředí nebo práci z domova. Baterie vydrží až 12 měsíců bez nutnosti výměny.',
-    brand: 'ClickPro'
+    brand: 'ClickPro',
+    default: true
   },
   { 
     id: 3, 
@@ -32,7 +34,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse2.mm.bing.net/th?id=OIP.bng_gmzzP7xCUMyoZfdblgHaHa&w=474&h=474&c=7',
     color: 'Black',
     description: 'Tento 27palcový LED monitor s rozlišením 4K Ultra HD nabízí neuvěřitelně ostrý obraz a živé barvy, ideální pro profesionální grafiky, editory videa i běžné uživatele. Monitor podporuje HDR, má široké pozorovací úhly a tenké rámečky, které umožňují vícemonitorové sestavy. Díky portům HDMI, DisplayPort a USB-C je velmi univerzální.',
-    brand: 'ViewMax'
+    brand: 'ViewMax',
+    default: true
   },
   { 
     id: 4, 
@@ -43,7 +46,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse2.mm.bing.net/th?id=OIP.WhiDofZ9MJAfJmZj4H2IAgHaHa&w=474&h=474&c=7',
     color: 'Silver',
     description: 'Přenosný SSD disk s kapacitou 1 TB a vysokou rychlostí přenosu dat až 1050 MB/s. Kompaktní hliníkové tělo zajišťuje vysokou odolnost proti nárazům a snadné přenášení. Kompatibilní s Windows, Mac i Android zařízeními přes USB-C. Ideální pro zálohování důležitých souborů, práci s velkými daty nebo přenášení multimédií.',
-    brand: 'DataRush'
+    brand: 'DataRush',
+    default: true
   },
   { 
     id: 5, 
@@ -54,7 +58,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse3.mm.bing.net/th?id=OIP.2sjTq-2N8v6hPQ5uRiAHbwHaHa&w=474&h=474&c=7',
     color: 'Blue',
     description: 'Elegantní fitness náramek, který sleduje vaši aktivitu, spánek, srdeční tep i úroveň stresu během dne. Disponuje barevným dotykovým displejem a aplikací pro Android/iOS, která zaznamenává veškeré údaje. Nabízí různé sportovní režimy, voděodolnost IP68 a výdrž baterie až 10 dní na jedno nabití.',
-    brand: 'FitPro'
+    brand: 'FitPro',
+    default: true
   },
   { 
     id: 6, 
@@ -65,7 +70,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse2.mm.bing.net/th?id=OIP.LFJ19gAFe-QF7oy-Q7KwNwHaHa&w=474&h=474&c=7',
     color: 'White',
     description: 'Kompaktní dron vhodný pro děti i dospělé. Nabízí HD kameru pro základní záznamy a živý přenos videa do mobilního zařízení. Stabilizace letu, automatický vzlet a přistání, funkce "follow me" a snadné ovládání přes aplikaci nebo dálkový ovladač. Perfektní pro začátečníky, kteří si chtějí vyzkoušet létání.',
-    brand: 'SkyFly'
+    brand: 'SkyFly',
+    default: true
   },
   { 
     id: 7, 
@@ -76,7 +82,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse2.mm.bing.net/th?id=OIP.vYTTWYvUspIjJZoSXRIGxwHaHa&w=474&h=474&c=7',
     color: 'Multicolor',
     description: 'Chytrá žárovka s Wi-Fi připojením, která vám umožní ovládat osvětlení přes mobilní aplikaci nebo hlasové asistenty jako Alexa a Google Assistant. Nabízí nastavitelnou barevnou teplotu, tisíce barev a plánování zapnutí/vypnutí. Ideální pro moderní domácnosti a chytré osvětlení bez složité instalace.',
-    brand: 'GlowTech'
+    brand: 'GlowTech',
+    default: true
   },
   { 
     id: 8, 
@@ -87,7 +94,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse2.mm.bing.net/th?id=OIP.OBt0vZMKvqftopb63YZ4nwHaHa&w=474&h=474&c=7',
     color: 'Red',
     description: 'Kompaktní přenosný reproduktor s Bluetooth 5.0 technologií a výdrží baterie až 12 hodin. Disponuje voděodolností IPX5, což z něj dělá ideálního parťáka na výlety, pláž nebo do sprchy. Silný zvuk s hlubokými basy a možností propojení dvou reproduktorů pro stereo efekt.',
-    brand: 'BoomBeat'
+    brand: 'BoomBeat',
+    default: true
   },
   { 
     id: 9, 
@@ -98,7 +106,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse3.mm.bing.net/th?id=OIP.vKlx_kZXaLd4C7TGAYZ1FgHaHa&w=474&h=474&c=7',
     color: 'Silver',
     description: 'Výkonný smartphone s 6.5" AMOLED displejem, osmijádrovým procesorem, 128 GB úložištěm a 48MP duálním fotoaparátem. Nabízí podporu 5G, NFC, čtečku otisků prstů pod displejem a rychlé 33W nabíjení. Perfektní kombinace výkonu a designu pro každodenní použití i multimediální zábavu.',
-    brand: 'TechNova'
+    brand: 'TechNova',
+    default: true
   },
   { 
     id: 10, 
@@ -109,7 +118,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse1.mm.bing.net/th?id=OIP.GaRuAEic-m0tLul_bEyNGgHaHa&w=474&h=474&c=7',
     color: 'Black',
     description: 'Profesionální digitální zrcadlovka s 24MP APS-C senzorem, optickým hledáčkem a možností natáčení videí ve Full HD. Ideální pro nadšené fotografy a začínající profesionály. Podporuje výměnné objektivy, má rychlé ostření a dlouhou výdrž baterie pro focení i na cestách.',
-    brand: 'PhotoPro'
+    brand: 'PhotoPro',
+    default: true
   },
   { 
     id: 11, 
@@ -120,7 +130,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse1.mm.bing.net/th?id=OIP.2Q1tAPiybGyJK-7W-K4tswHaHa&w=474&h=474&c=7',
     color: 'Black',
     description: 'Mechanická herní klávesnice s RGB podsvícením, antighostingem a programovatelnými klávesami. Odolná konstrukce a rychlá odezva z ní dělají ideální volbu pro náročné hráče. Podporuje více režimů osvětlení a makra pro pokročilé nastavení.',
-    brand: 'KeyBlaze'
+    brand: 'KeyBlaze',
+    default: true
   },
   { 
     id: 12, 
@@ -131,7 +142,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse1.mm.bing.net/th?id=OIP.nA8yfRftXQ7cLSzdfPPq7AHaHa&w=474&h=474&c=7',
     color: 'White',
     description: 'Kompaktní bezdrátová sluchátka s čistým zvukem, potlačením okolního hluku a výdrží až 6 hodin přehrávání na jedno nabití (až 24 hodin s nabíjecím pouzdrem). Dotykové ovládání, odolnost proti potu (IPX4) a pohodlné nošení je činí skvělými pro sport i každodenní použití.',
-    brand: 'SoundMaster'
+    brand: 'SoundMaster',
+    default: true
   },
   { 
     id: 13, 
@@ -142,7 +154,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse2.mm.bing.net/th?id=OIP.MA5WaZ2Hxok1kOGL5a8WvAHaHa&w=474&h=474&c=7',
     color: 'Yellow',
     description: 'Interaktivní robotická hračka pro děti od 3 let, která mluví, tancuje, svítí a reaguje na dotyk. Nabízí zábavu i výuku díky hravým režimům a možnostem interakce. Vyroben z bezpečných a odolných materiálů. Pomáhá rozvíjet kreativitu a jemnou motoriku.',
-    brand: 'PlayBot'
+    brand: 'PlayBot',
+    default: true
   },
   { 
     id: 14, 
@@ -153,7 +166,8 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse3.mm.bing.net/th?id=OIP.h5e4BLf_M0ZgZqDrjFwsqAHaHa&w=474&h=474&c=7',
     color: 'White',
     description: 'Chytrý termostat, který se učí vaše zvyky a pomáhá optimalizovat spotřebu energie v domácnosti. Ovládání přes mobilní aplikaci, plánování teploty, geolokace a podpora hlasových asistentů. Kompatibilní s většinou topných systémů.',
-    brand: 'ClimaTech'
+    brand: 'ClimaTech',
+    default: true
   },
   { 
     id: 15, 
@@ -164,6 +178,7 @@ export const defaultProducts: Product[] = [
     imageUrl: 'https://tse3.mm.bing.net/th?id=OIP.zWZr34eR44yTyTnVvZBFTgHaHa&w=474&h=474&c=7',
     color: 'Black',
     description: 'Elegantní bezdrátová nabíječka kompatibilní s technologií Qi, vhodná pro většinu moderních smartphonů. Nabízí rychlé nabíjení až 15W, LED indikátor stavu nabití a protiskluzový povrch. Bezpečnostní prvky zabraňují přehřátí nebo přebíjení zařízení.',
-    brand: 'ChargeX'
+    brand: 'ChargeX',
+    default: true
   },
 ];

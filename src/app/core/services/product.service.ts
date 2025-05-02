@@ -41,8 +41,12 @@ export class ProductService {
   }
 
   updateProduct(updatedProduct: Product): void {
+    const productWithIncreasedPrice = {
+      ...updatedProduct,
+      price: updatedProduct.price + 10
+    }
     this.products = this.products.map(product =>
-      product.id === updatedProduct.id ? updatedProduct : product
+      product.id === productWithIncreasedPrice.id ? productWithIncreasedPrice : product
     );
     this.saveProducts();
   }

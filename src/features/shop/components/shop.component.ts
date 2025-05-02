@@ -88,7 +88,14 @@ export class ShopComponent {
     const sortOption = this.sortControl.value;
 
     if (selectedCategory !== 'All') {
-      filtered = this.products.filter(product => product.category === selectedCategory);
+      if (selectedCategory === 'Toys'){
+        filtered = this.products.filter(
+          product => product.category === 'Toys' || product.category === 'Audio'
+        );
+      } else {
+        filtered = this.products.filter(product => product.category === selectedCategory);
+      }
+      
     }
 
     this.filteredProducts = [...filtered].sort((a, b) => {

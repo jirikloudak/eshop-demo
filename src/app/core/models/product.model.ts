@@ -8,4 +8,5 @@ export interface Product {
     color?: string;
     description?: string;
     brand?: string;
+    default: boolean;
   }

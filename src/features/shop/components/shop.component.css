@@ -68,6 +68,14 @@ h3 {
   background-color: #45aa5b;
 }
 
+.add-to-cart.non-default {
+  background-color: #4caf50; /* Blue color for non-default products */
+}
+
+.add-to-cart.non-default:hover {
+  background-color: #00379c; /* Darker blue on hover */
+}
+
 .cart-overlay {
   position: fixed;
   top: 0;

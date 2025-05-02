@@ -23,7 +23,7 @@
             <span class="value">{{ product.brand || 'N/A' }}</span>
           </div>
           <div class="info-item">
-            <span class="label">Color:</span>
+            <span class="label">Barva:</span>
             <span class="value">{{ product.color || 'N/A' }}</span>
           </div>
         </div>
@@ -80,7 +80,7 @@
         </div>
         
         <div *ngIf="cart.length > 0" class="cart-summary">
-          <p>Total: <strong>$ {{ cartTotal.toFixed(2) }}</strong></p>
+          <p>Total: <strong>€ {{ cartTotal.toFixed(2) }}</strong></p>
           <button class="checkout-button" [routerLink]="['/checkout']">Checkout</button>
         </div>
       </div>

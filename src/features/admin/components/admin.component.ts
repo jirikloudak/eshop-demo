@@ -27,7 +27,8 @@ export class AdminComponent {
     imageUrl: '',
     color: '',
     description: '',
-    brand: ''
+    brand: '',
+    default: false
   };
   categories: string[] = [
     'Audio',
@@ -56,7 +57,8 @@ export class AdminComponent {
       imageUrl: '',
       color: '',
       description: '',
-      brand: ''
+      brand: '',
+      default: false
     };
     this.showModal = true;
     this.showCategoryDropdown = false;
@@ -84,10 +86,13 @@ export class AdminComponent {
   }
 
   editProduct(product: Product) {
-    this.isEditing = true; // Set to edit mode
-    this.newProduct = { ...product }; // Pre-fill the form with the product's data
-    this.showModal = true;
-    this.showCategoryDropdown = false;
+    if (product.default){
+      this.isEditing = true;
+      this.newProduct = { ...product };
+      this.showModal = true;
+      this.showCategoryDropdown = false;
+    }
+
   }
 
   removeProduct(id: number) {
@@ -103,9 +108,9 @@ export class AdminComponent {
       Name: product.name,
       Category: product.category,
       Price: product.price.toFixed(2),
-      Stock: product.stock,
+      Color: product.stock,
       'Image URL': product.imageUrl,
-      Color: product.color || '',
+      Stock: product.color || '',
       Description: product.description || '',
       Brand: product.brand || ''
     }));

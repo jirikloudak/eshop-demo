@@ -31,8 +31,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   private specialOfferCodes: { [key: string]: { type: string, description: string } } = {
     'FREESHIP8': { type: 'freeDelivery', description: 'Free Delivery Applied!' },
-    'AUDIO20PC': { type: 'audioDiscount', description: '20% Audio Discount Applied!' },
-    'FLAT200OF': { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' }
+    'AUDIO20PC': { type: 'audioDiscount', description: '50% Audio Discount Applied!' },
+    'FLAT200OF': { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' },
+    'FLAT99'   : { type: 'secretDiscount', description: 'Wow, how did you find this? 99% DISCOUNT!!!'}
   };
   appliedOffer: { type: string, description: string } | null = null;
 
@@ -160,6 +161,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         this.specialOfferDiscount = audioSubtotal * 0.20; // 20% discount on audio products
       } else if (this.appliedOffer.type === 'flatDiscount') {
         this.specialOfferDiscount = 200; // Flat $200 discount
+      } else if (this.appliedOffer.type === 'secretDiscount') {
+        this.specialOfferDiscount = this.cartSubtotal * 0.99;
       }
     }
 
@@ -187,10 +190,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (this.checkoutForm.valid) {
       for (const item of this.cart) {
         const availableStock = this.productService.getStock(item.product.id);
-        if (item.quantity > availableStock) {
-          alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
-          return;
-        }
+        //if (item.quantity > availableStock) {
+        //  alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
+        //  return;
+        //}
       }
 
       this.orderDetails = {
