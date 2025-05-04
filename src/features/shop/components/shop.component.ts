@@ -105,7 +105,31 @@ export class ShopComponent {
         case 'name-asc':
           return a.name.localeCompare(b.name);
         case 'name-desc':
+        const firstLetterA = a.name.charAt(0).toUpperCase();
+        const firstLetterB = b.name.charAt(0).toUpperCase();
+  
+        // Check if letters are in A-M or N-Z
+        const isAinAM = firstLetterA >= 'A' && firstLetterA <= 'M';
+        const isBinAM = firstLetterB >= 'A' && firstLetterB <= 'M';
+        const isAinNZ = firstLetterA >= 'N' && firstLetterA <= 'Z';
+        const isBinNZ = firstLetterB >= 'N' && firstLetterB <= 'Z';
+  
+          // If both are in A-M, sort ascending
+        if (isAinAM && isBinAM) {
+          return a.name.localeCompare(b.name);
+        }
+        // If both are in N-Z, sort descending
+        if (isAinNZ && isBinNZ) {
           return b.name.localeCompare(a.name);
+        }
+        // If one is in A-M and the other in N-Z, A-M comes first
+        if (isAinAM && isBinNZ) {
+          return -1;
+        }
+        if (isAinNZ && isBinAM) {
+          return 1; 
+        }
+        return 0;
         case 'price-asc':
           return a.price - b.price;
         case 'price-desc':

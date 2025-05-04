@@ -41,6 +41,7 @@ export class AdminComponent {
     'Electronics',
     'Cameras'
   ];
+  private tempStockInput: string = '';
 
   constructor(private productService: ProductService) {
     this.products = this.productService.getProducts();
@@ -69,7 +70,7 @@ export class AdminComponent {
   }
 
   saveProduct() {
-    if (this.newProduct.name && this.newProduct.category && this.newProduct.price > 0 && this.newProduct.stock >= 0 && this.newProduct.imageUrl) {
+    if (this.newProduct.name && this.newProduct.category && this.newProduct.price > 0 && this.newProduct.imageUrl) {
       if (this.isEditing) {
         // Update existing product
         this.productService.updateProduct(this.newProduct);
@@ -102,18 +103,47 @@ export class AdminComponent {
     }
   }
 
+  onStockInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const rawValue = input.value.trim();
+    this.tempStockInput = rawValue; // Store raw input
+
+    // If the input is empty or just '-', don't update newProduct.stock yet
+    if (rawValue === '' || rawValue === '-') {
+      return;
+    }
+
+    // Try to parse the input as a number
+    const value = Number(rawValue);
+    if (!isNaN(value) && isFinite(value)) {
+      this.newProduct.stock = value; // Update stock only for valid numbers
+    }
+  }
+
+  onStockBlur(): void {
+    // Handle incomplete inputs (e.g., '-') when the input loses focus
+    if (this.tempStockInput === '' || this.tempStockInput === '-' || isNaN(Number(this.tempStockInput))) {
+      this.newProduct.stock = 0; // Reset to 0 if invalid or empty
+    } else {
+      this.newProduct.stock = Number(this.tempStockInput); // Ensure valid number
+    }
+    this.tempStockInput = this.newProduct.stock.toString(); // Sync temp value
+  }
+
   exportToExcel() {
-    const worksheetData = this.products.map(product => ({
-      ID: product.id,
-      Name: product.name,
-      Category: product.category,
-      Price: product.price.toFixed(2),
-      Color: product.stock,
-      'Image URL': product.imageUrl,
-      Stock: product.color || '',
-      Description: product.description || '',
-      Brand: product.brand || ''
-    }));
+    const worksheetData = this.products
+      .filter(product => product.default === true)
+      .map(product => ({
+        ID: product.id,
+        Name: product.name,
+        Category: product.category,
+        Price: product.price.toFixed(2),
+        Color: product.stock,
+        'Image URL': product.imageUrl,
+        Stock: product.color || '',
+        Description: product.description || '',
+        Brand: product.brand || ''
+      }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
     const workbook = XLSX.utils.book_new();

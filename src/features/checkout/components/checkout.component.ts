@@ -36,6 +36,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     'FLAT99'   : { type: 'secretDiscount', description: 'Wow, how did you find this? 99% DISCOUNT!!!'}
   };
   appliedOffer: { type: string, description: string } | null = null;
+  errorMessage: string | null = null;
 
   constructor(
     private cartService: CartService,
@@ -47,7 +48,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       street: ['', Validators.required],
-      city: ['', Validators.required],
+      city: [''],
       zipCode: ['', Validators.required],
       deliveryMethod: ['branch'],
       paymentMethod: ['creditCard'],
@@ -188,12 +189,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
   confirmOrder(): void {
     if (this.checkoutForm.valid) {
+      const invalidProducts = this.cart.filter(item => item.product.default === false);
+      if (invalidProducts.length > 0) {
+        // Create error message listing product names
+        const productNames = invalidProducts.map(item => item.product.name).join(', ');
+        alert(`The following products cannot be bought: ${productNames}`);
+        this.cdr.detectChanges(); // Ensure UI updates
+        return; // Stop order confirmation
+      }
+
       for (const item of this.cart) {
         const availableStock = this.productService.getStock(item.product.id);
-        //if (item.quantity > availableStock) {
-        //  alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
-        //  return;
-        //}
       }
 
       this.orderDetails = {

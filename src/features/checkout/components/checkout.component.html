@@ -40,7 +40,7 @@
         <div class="form-group city-zip">
           <div class="form-group">
             <label for="city">City <span class="required-star">*</span></label>
-            <input id="city" formControlName="city" type="text" placeholder="Enter your city" required>
+            <input id="city" formControlName="city" type="text" placeholder="Enter your city">
             <div *ngIf="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched" class="error">
               City is required.
             </div>
@@ -166,7 +166,7 @@
         <span>-$ {{ orderDetails.studentDiscount.toFixed(2) }}</span>
       </div>
       <div class="summary-row total">
-        <span>Total:</span>
+        <span>Totl:</span>
         <span>$ {{ orderDetails.total.toFixed(2) }}</span>
       </div>
     </div>
