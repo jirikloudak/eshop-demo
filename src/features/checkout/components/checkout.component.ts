@@ -50,6 +50,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       street: ['', Validators.required],
       city: [''],
       zipCode: ['', Validators.required],
+      dateOfBirth: [''],
+      email: ['', [Validators.required, Validators.email]],
+      countryCode: ['CZ', Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern(this.getPhoneNumberPattern('CZ'))]],
       deliveryMethod: ['branch'],
       paymentMethod: ['creditCard'],
       isStudent: [false],
@@ -70,6 +74,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.checkoutForm.get('isStudent')?.valueChanges.subscribe(() => {
       this.validateAndApplySpecialOffer();
       this.calculateTotals();
+    });
+    this.checkoutForm.get('countryCode')?.valueChanges.subscribe(countryCode => {
+      const phoneControl = this.checkoutForm.get('phoneNumber');
+      phoneControl?.setValidators([
+        Validators.required,
+        Validators.pattern(this.getPhoneNumberPattern(countryCode))
+      ]);
+      phoneControl?.updateValueAndValidity();
     });
   }
 
@@ -248,6 +260,48 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       default:
         return 'Unknown';
     }
+  }
+
+  getPhoneNumberPattern(countryCode: string): string {
+    switch (countryCode) {
+      case 'CZ':
+      case 'SK':
+        return '^[0-9]{9}$'; // 9 digits, e.g., 123456789
+      case 'PL':
+        return '^[0-9]{9}$'; // 9 digits, e.g., 123456789
+      case 'AT':
+        return '^[0-9]{7,13}$'; // 7-13 digits, accommodates various formats
+      case 'DE':
+        return '^[0-9]{10,11}$'; // 10-11 digits, e.g., 01234567890
+      default:
+        return '^[0-9,d]{7,15}$'; // Fallback: 7-15 digits
+    }
+  }
+
+  getCountryCodeDisplay(countryCode?: string): string {
+    const code = countryCode || this.checkoutForm.get('countryCode')?.value;
+    switch (code) {
+      case 'CZ':
+        return '+420';
+      case 'SK':
+        return '+421';
+      case 'PL':
+        return '+48';
+      case 'AT':
+        return '+43';
+      case 'DE':
+        return '+49';
+      default:
+        return '+420';
+    }
+  }
+  
+  updateCountryCode(): void {
+    this.cdr.detectChanges();
+  }
+
+  getFlagUrl(countryCode: string): string {
+    return `https://flagcdn.com/${countryCode.toLowerCase()}.svg`;
   }
 
   get cartTotal(): number {

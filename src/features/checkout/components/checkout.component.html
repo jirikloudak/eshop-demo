@@ -55,6 +55,44 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth <span class="required-star"></span></label>
+        <input id="dateOfBirth" formControlName="dateOfBirth" type="date">
+      </div>
+      <div class="form-group">
+        <label for="email">Email <span class="required-star">*</span></label>
+        <input id="email" formControlName="email" type="email" placeholder="Enter your email" required>
+        <div *ngIf="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched" class="error">
+          <span *ngIf="checkoutForm.get('email')?.errors?.['required']">Email is required.</span>
+          <span *ngIf="checkoutForm.get('email')?.errors?.['email']">Please enter a valid email.</span>
+        </div>
+      </div>
+      <div class="form-group phone-group">
+        <label for="phoneNumber">Phone Number <span class="required-star">*</span></label>
+        <div class="phone-input-group">
+          <div class="country-select-wrapper">
+            <img class="flag-icon" [src]="getFlagUrl(checkoutForm.get('countryCode')?.value)" alt="Country flag">
+            <select id="countryCode" formControlName="countryCode" (change)="updateCountryCode()">
+              <option value="CZ">Czech Republic</option>
+              <option value="SK">Slovakia</option>
+              <option value="PL">Poland</option>
+              <option value="AT">Austria</option>
+              <option value="DE">Germany</option>
+            </select>
+          </div>
+          <span class="country-code-label" contenteditable="true">{{ getCountryCodeDisplay() }}</span>
+          <input id="phoneNumber" formControlName="phoneNumber" type="tel" placeholder="Enter your phone number" required>
+        </div>
+        <div *ngIf="checkoutForm.get('countryCode')?.invalid && checkoutForm.get('countryCode')?.touched" class="error">
+          Country code is required.
+        </div>
+        <div *ngIf="checkoutForm.get('phoneNumber')?.invalid && checkoutForm.get('phoneNumber')?.touched" class="error">
+          <span *ngIf="checkoutForm.get('phoneNumber')?.errors?.['required']">Phone number is required.</span>
+          <span *ngIf="checkoutForm.get('phoneNumber')?.errors?.['pattern']">Please enter a valid phone number.</span>
+        </div>
+      </div>
+
+
       <!-- Delivery Method -->
       <div class="form-group">
         <label for="deliveryMethod">Delivery Method</label>
@@ -138,6 +176,9 @@
     <p>Thank you for your order, {{ orderDetails.firstName }} {{ orderDetails.lastName }}!</p>
     <p>Your order will be delivered to:</p>
     <p>{{ orderDetails.street }}, {{ orderDetails.city }}, {{ orderDetails.zipCode }}</p>
+    <p>Date of Birth: {{ orderDetails.dateOfBirth | date:'mediumDate' }}</p>
+    <p>Email: {{ orderDetails.email }}</p>
+    <p>Phone Number: {{ getCountryCodeDisplay(orderDetails.countryCode) }} {{ orderDetails.phoneNumber }}</p>
     <p>Delivery Method: {{ getDeliveryMethodLabel(orderDetails.deliveryMethod) }}</p>
     <p>Payment Method: {{ getPaymentMethodLabel(orderDetails.paymentMethod) }}</p>
     <p *ngIf="orderDetails.isStudent">Student Discount Applied: 15%</p>
