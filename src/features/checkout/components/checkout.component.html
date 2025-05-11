@@ -14,7 +14,7 @@
       <div class="name-group">
         <div class="form-group">
           <label for="firstName">First Name <span class="required-star">*</span></label>
-          <input id="firstName" formControlName="firstName" type="text" placeholder="Enter your first name" required>
+          <input id="firstName" formControlName="firstName" type="text" placeholder="Enter your first name" maxlength="30" required>
           <div *ngIf="checkoutForm.get('firstName')?.invalid && checkoutForm.get('firstName')?.touched" class="error">
             First name is required.
           </div>
@@ -32,7 +32,7 @@
       <div class="address-group">
         <div class="form-group">
           <label for="street">Street <span class="required-star">*</span></label>
-          <input id="street" formControlName="street" type="text" placeholder="Enter your street" required>
+          <input id="street" formControlName="street" type="text" placeholder="Enter your street" maxlength="30" required>
           <div *ngIf="checkoutForm.get('street')?.invalid && checkoutForm.get('street')?.touched" class="error">
             Street is required.
           </div>
@@ -40,14 +40,14 @@
         <div class="form-group city-zip">
           <div class="form-group">
             <label for="city">City <span class="required-star">*</span></label>
-            <input id="city" formControlName="city" type="text" placeholder="Enter your city">
+            <input id="city" formControlName="city" type="text" placeholder="Enter your city" maxlength="30">
             <div *ngIf="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched" class="error">
               City is required.
             </div>
           </div>
           <div class="form-group">
             <label for="zipCode">ZIP Code <span class="required-star">*</span></label>
-            <input id="zipCode" formControlName="zipCode" type="text" placeholder="Enter your ZIP code" required>
+            <input id="zipCode" formControlName="zipCode" type="text" placeholder="Enter your ZIP code" maxlength="30" required>
             <div *ngIf="checkoutForm.get('zipCode')?.invalid && checkoutForm.get('zipCode')?.touched" class="error">
               ZIP code is required.
             </div>
@@ -61,7 +61,7 @@
       </div>
       <div class="form-group">
         <label for="email">Email <span class="required-star">*</span></label>
-        <input id="email" formControlName="email" type="email" placeholder="Enter your email" required>
+        <input id="email" formControlName="email" type="email" placeholder="Enter your email" maxlength="30" required>
         <div *ngIf="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched" class="error">
           <span *ngIf="checkoutForm.get('email')?.errors?.['required']">Email is required.</span>
           <span *ngIf="checkoutForm.get('email')?.errors?.['email']">Please enter a valid email.</span>
@@ -81,7 +81,7 @@
             </select>
           </div>
           <span class="country-code-label" contenteditable="true">{{ getCountryCodeDisplay() }}</span>
-          <input id="phoneNumber" formControlName="phoneNumber" type="tel" placeholder="Enter your phone number" required>
+          <input id="phoneNumber" formControlName="phoneNumber" type="tel" placeholder="Enter your phone number" maxlength="30" required>
         </div>
         <div *ngIf="checkoutForm.get('countryCode')?.invalid && checkoutForm.get('countryCode')?.touched" class="error">
           Country code is required.
@@ -115,7 +115,7 @@
 
       <div class="form-group">
         <label for="specialOfferCode">Special Offer Code</label>
-        <input id="specialOfferCode" formControlName="specialOfferCode" type="text" placeholder="Enter your code">
+        <input id="specialOfferCode" formControlName="specialOfferCode" type="text" placeholder="Enter your code" maxlength="30">
         <div *ngIf="appliedOffer" class="offer-message" [ngClass]="{'error': appliedOffer.type === 'invalid', 'success': appliedOffer.type !== 'invalid'}">
           {{ appliedOffer.description }}
         </div>
@@ -124,7 +124,7 @@
       <!-- Student Discount -->
       <div class="form-group checkbox-group">
         <label>
-          <input type="checkbox" formControlName="isStudent" (change)="updateDiscounts()">
+          <input type="checkbox" formControlName="isStudent" (change)="updateDiscounts()" maxlength="30">
           I am a student (15% discount)
         </label>
       </div>
@@ -155,6 +155,10 @@
             <span>Student Discount (15%):</span>
             <span>-$ {{ studentDiscount.toFixed(2) }}</span>
           </div>
+          <div class="summary-row" *ngIf="seniorDiscount > 0"> <!-- New senior discount display -->
+            <span>Senior Discount (10%):</span>
+            <span>-$ {{ seniorDiscount.toFixed(2) }}</span>
+          </div>
           <div class="summary-row total">
             <span>Total:</span>
             <span>$ {{ total.toFixed(2) }}</span>
@@ -182,6 +186,7 @@
     <p>Delivery Method: {{ getDeliveryMethodLabel(orderDetails.deliveryMethod) }}</p>
     <p>Payment Method: {{ getPaymentMethodLabel(orderDetails.paymentMethod) }}</p>
     <p *ngIf="orderDetails.isStudent">Student Discount Applied: 15%</p>
+    <p *ngIf="orderDetails.seniorDiscount > 0">Senior Discount Applied: 10%</p>
     <h3>Order Summary</h3>
     <div class="cart-items">
       <div *ngFor="let item of cart" class="cart-item">

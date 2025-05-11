@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 import { ProductService } from '@core/services/product.service';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { HeaderComponent } from '@core/components/header/header.component';
+import { BasePageComponent } from '@core/components/base-page.component';
 
 @Component({
   selector: 'app-shop',
@@ -15,7 +16,7 @@ import { HeaderComponent } from '@core/components/header/header.component';
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })
-export class ShopComponent {
+export class ShopComponent extends BasePageComponent {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   showCart = false;
@@ -27,6 +28,7 @@ export class ShopComponent {
     private cartService: CartService,
     private productService: ProductService
   ) {
+    super();
     this.loadProducts();
     this.categoryControl.valueChanges.subscribe(() => this.applyFiltersAndSort());
     this.sortControl.valueChanges.subscribe(() => this.applyFiltersAndSort());

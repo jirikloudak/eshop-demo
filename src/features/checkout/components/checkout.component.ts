@@ -25,6 +25,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   creditCardDiscount = 0;
   studentDiscount = 0;
   specialOfferDiscount = 0;
+  seniorDiscount = 0;
   total = 0;
   orderDetails: any = {};
   private cartSubscription!: Subscription;
@@ -75,6 +76,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.validateAndApplySpecialOffer();
       this.calculateTotals();
     });
+    this.checkoutForm.get('dateOfBirth')?.valueChanges.subscribe(() => {
+      this.calculateTotals();
+    });
     this.checkoutForm.get('countryCode')?.valueChanges.subscribe(countryCode => {
       const phoneControl = this.checkoutForm.get('phoneNumber');
       phoneControl?.setValidators([
@@ -94,6 +98,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   toggleCart(): void {
     this.showCart = !this.showCart;
     this.cdr.detectChanges();
+  }
+
+  calculateAge(dateOfBirth: string): number {
+    if (!dateOfBirth) return 0;
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   }
 
   validateAndApplySpecialOffer(): void {
@@ -149,9 +165,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     // Calculate discounts
     const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
     const isStudent = this.checkoutForm.get('isStudent')?.value;
+    const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
+    const age = this.calculateAge(dateOfBirth);
 
     this.creditCardDiscount = 0;
     this.studentDiscount = 0;
+    this.seniorDiscount = 0;
     this.specialOfferDiscount = 0;
 
     if (paymentMethod === 'creditCard') {
@@ -160,6 +179,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     if (isStudent) {
       this.studentDiscount = this.cartSubtotal * 0.15;
+    } else if (age > 65) {
+      this.seniorDiscount = this.cartSubtotal * 0.10;
     }
 
     if (!isStudent && this.appliedOffer) {
@@ -184,11 +205,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     if (totalDiscount > this.cartSubtotal) {
       this.creditCardDiscount = (this.creditCardDiscount / totalDiscount) * this.cartSubtotal;
       this.studentDiscount = (this.studentDiscount / totalDiscount) * this.cartSubtotal;
+      this.seniorDiscount = (this.seniorDiscount / totalDiscount) * this.cartSubtotal;
       this.specialOfferDiscount = (this.specialOfferDiscount / totalDiscount) * this.cartSubtotal;
     }
 
     // Calculate total
-    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount - this.specialOfferDiscount;
+    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount - this.seniorDiscount - this.specialOfferDiscount;
   }
 
   updateDeliveryFee(): void {
