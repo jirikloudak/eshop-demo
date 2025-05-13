@@ -72,12 +72,31 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.checkoutForm.get('specialOfferCode')?.valueChanges.subscribe(() => {
       this.validateAndApplySpecialOffer();
     });
-    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(() => {
+    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(isStudent => {
+      const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
+      const age = this.calculateAge(dateOfBirth);
+
+      if (isStudent && age > 65) {
+        // Prevent student discount if senior discount applies
+        this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
+        alert('Senior discount cannot be used with the student discount.');
+      }
+
       this.validateAndApplySpecialOffer();
       this.calculateTotals();
+      this.cdr.detectChanges();
     });
-    this.checkoutForm.get('dateOfBirth')?.valueChanges.subscribe(() => {
+    this.checkoutForm.get('dateOfBirth')?.valueChanges.subscribe(dateOfBirth => {
+      const isStudent = this.checkoutForm.get('isStudent')?.value;
+      const age = this.calculateAge(dateOfBirth);
+
+    if (age > 65 && isStudent) {
+      // Uncheck student discount and apply senior discount
+      this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
+      alert('Senior discount cannot be used with the student discount.');
+    }
       this.calculateTotals();
+      this.cdr.detectChanges();
     });
     this.checkoutForm.get('countryCode')?.valueChanges.subscribe(countryCode => {
       const phoneControl = this.checkoutForm.get('phoneNumber');
@@ -179,7 +198,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     if (isStudent) {
       this.studentDiscount = this.cartSubtotal * 0.15;
-    } else if (age > 65) {
+    } else if (age >= 64) {
       this.seniorDiscount = this.cartSubtotal * 0.10;
     }
 
@@ -211,6 +230,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     // Calculate total
     this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount - this.seniorDiscount - this.specialOfferDiscount;
+    console.log(age); 
+    
   }
 
   updateDeliveryFee(): void {
