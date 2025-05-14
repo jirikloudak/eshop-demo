@@ -255,6 +255,10 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
       for (const item of this.cart) {
         const availableStock = this.productService.getStock(item.product.id);
+        if (item.quantity > availableStock) {
+          alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
+          return;
+        }
       }
 
       this.orderDetails = {

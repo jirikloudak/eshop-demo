@@ -30,12 +30,12 @@
         <div class="products-grid">
           <div *ngFor="let product of filteredProducts" class="product-card">
             <a [routerLink]="['/product', product.id]" class="product-link">
-              <img [src]="product.imageUrl" [alt]="product.name" class="product-image">
+              <img [src]="product.imageUrl" [alt]="product.name" class="product-image" [ngStyle]="product.imageUrl === '/assets/mouse_image.jpg' ? {'width': '300px', 'height': '300px'} : {}">
               <h3>{{ product.name }}</h3>
               <p class="price">{{ product.price.toFixed(2) }},-</p>
               <p class="stock-status" [ngClass]="{'out-of-stock': product.stock === 0}">
                 {{ product.stock > 0 ? 'In stock: ' + product.stock : 'Out of stock' }}
-              </p>
+              </p>  
             </a>
             <button *ngIf="!isInCart(product)" class="add-to-cart" 
                     [ngClass]="{'non-default': !product.default}" 

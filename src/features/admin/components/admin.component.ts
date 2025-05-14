@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '@core/services/product.service';
 import { Product } from '@core/models/product.model';
+import { Image, defaultImages } from '@core/data/default-images';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -41,6 +42,7 @@ export class AdminComponent {
     'Electronics',
     'Cameras'
   ];
+  defaultImages: Image[] = defaultImages;
 
   constructor(private productService: ProductService) {
     this.products = this.productService.getProducts();
@@ -118,5 +120,10 @@ export class AdminComponent {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Products');
     XLSX.writeFile(workbook, 'products.xlsx');
+  }
+
+  resetApplication() {
+    localStorage.clear();
+    window.location.reload();
   }
 }

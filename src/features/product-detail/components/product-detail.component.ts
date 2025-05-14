@@ -45,16 +45,17 @@ export class ProductDetailComponent implements OnInit {
     console.log('showCart after:', this.showCart); // Debugging
   }
 
-  addToCart(): void {
-    if (this.product) {
-      if (this.product.stock > 0) {
-        this.cartService.addToCart(this.product, this.quantity);
-        this.quantity = 1;
-      } else {
-        alert('This product is out of stock!');
-      }
+addToCart(): void {
+  if (this.product) {
+    const cartQuantity = this.getCartQuantity(this.product.id);
+    if (this.product.stock > 0 && this.quantity <= this.product.stock - cartQuantity) {
+      this.cartService.addToCart(this.product, this.quantity);
+      this.quantity = 1;
+    } else {
+      alert('Not enough stock available!');
     }
   }
+}
 
   increaseQuantity(item: CartItem): void {
     if (item.product.stock >= item.quantity + 1) {
@@ -64,12 +65,14 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  incrementQuantity(): void {
-    if (this.product && this.quantity < this.product.stock) {
+incrementQuantity(): void {
+  if (this.product) {
+    const cartQuantity = this.getCartQuantity(this.product.id);
+    if (this.quantity < this.product.stock - cartQuantity) {
       this.quantity++;
     }
   }
-
+}
   decrementQuantity(): void {
     if (this.quantity > 1) {
       this.quantity--;
@@ -82,6 +85,12 @@ export class ProductDetailComponent implements OnInit {
 
   isInCart(): boolean {
     return this.product ? this.cartService.isInCart(this.product) : false;
+  }
+
+  getCartQuantity(productId: number | undefined): number {
+    if (!productId) return 0;
+    const cartItem = this.cart.find(item => item.product.id === productId);
+    return cartItem ? cartItem.quantity : 0;
   }
 
   clearCart(): void {

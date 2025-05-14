@@ -41,7 +41,7 @@
           <div class="quantity-selector">
             <button (click)="decrementQuantity()" [disabled]="quantity <= 1">-</button>
             <span>{{ quantity }}</span>
-            <button (click)="incrementQuantity()" [disabled]="quantity >= product.stock">+</button>
+            <button (click)="incrementQuantity()" [disabled]="quantity >= (product.stock - getCartQuantity(product.id))">+</button>
           </div>
           <button class="add-to-cart" (click)="addToCart()" [disabled]="product.stock === 0">
             Add to Cart
