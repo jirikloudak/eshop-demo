@@ -86,18 +86,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.calculateTotals();
       this.cdr.detectChanges();
     });
-    this.checkoutForm.get('dateOfBirth')?.valueChanges.subscribe(dateOfBirth => {
-      const isStudent = this.checkoutForm.get('isStudent')?.value;
-      const age = this.calculateAge(dateOfBirth);
 
-    if (age > 65 && isStudent) {
-      // Uncheck student discount and apply senior discount
-      this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
-      alert('Senior discount cannot be used with the student discount.');
-    }
-      this.calculateTotals();
-      this.cdr.detectChanges();
-    });
     this.checkoutForm.get('countryCode')?.valueChanges.subscribe(countryCode => {
       const phoneControl = this.checkoutForm.get('phoneNumber');
       phoneControl?.setValidators([
@@ -131,19 +120,38 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     return age;
   }
 
+  onDateOfBirthBlur(): void {
+    const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
+    const isStudent = this.checkoutForm.get('isStudent')?.value;
+    const age = this.calculateAge(dateOfBirth);
+
+    if (age >= 64 && isStudent) {
+      // Uncheck student discount and apply senior discount
+      this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
+      alert('Senior discount cannot be used with the student discount.');
+    }
+
+    // Revalidate special offer code when age changes
+    this.validateAndApplySpecialOffer();
+    this.calculateTotals();
+    this.cdr.detectChanges();
+  }
+
   validateAndApplySpecialOffer(): void {
     const code = this.checkoutForm.get('specialOfferCode')?.value?.trim().toUpperCase();
     const isStudent = this.checkoutForm.get('isStudent')?.value;
+    const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
+    const age = this.calculateAge(dateOfBirth);
 
     // Reset the applied offer
     this.appliedOffer = null;
     this.specialOfferDiscount = 0;
 
     // If student discount is active, special offers cannot be applied
-    if (isStudent) {
+    if (isStudent  || age >= 64) {
       if (code && this.specialOfferCodes[code]) {
         this.checkoutForm.get('specialOfferCode')?.setValue(''); // Clear the code
-        alert('Special offer codes cannot be used with the student discount.');
+        alert('Special offer codes cannot be used with the student or senior discount.');
       }
       this.calculateTotals();
       return;
