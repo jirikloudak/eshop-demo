@@ -2,11 +2,18 @@ import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { CartService } from '@core/services/cart.service';
 import { ProductService } from '@core/services/product.service';
 import { CartItem } from '@core/models/cart-item.model';
 import { HeaderComponent } from '@core/components/header/header.component';
-import { Subscription } from 'rxjs';
+
+interface SpecialOffer {
+  type: string;
+  description: string;
+}
+
+type DeliveryMethod = 'branch' | 'box' | 'home';
 
 @Component({
   selector: 'app-checkout',
@@ -24,20 +31,20 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   deliveryFee = 0;
   creditCardDiscount = 0;
   studentDiscount = 0;
-  specialOfferDiscount = 0;
   seniorDiscount = 0;
+  specialOfferDiscount = 0;
   total = 0;
   orderDetails: any = {};
-  private cartSubscription!: Subscription;
-
-  private specialOfferCodes: { [key: string]: { type: string, description: string } } = {
-    'FREESHIP8': { type: 'freeDelivery', description: 'Free Delivery Applied!' },
-    'AUDIO20PC': { type: 'audioDiscount', description: '50% Audio Discount Applied!' },
-    'FLAT200OF': { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' },
-    'FLAT99'   : { type: 'secretDiscount', description: 'Wow, how did you find this? 99% DISCOUNT!!!'}
-  };
-  appliedOffer: { type: string, description: string } | null = null;
+  appliedOffer: SpecialOffer | null = null;
   errorMessage: string | null = null;
+
+  private readonly specialOfferCodes: Record<string, SpecialOffer> = {
+    FREESHIP8: { type: 'freeDelivery', description: 'Free Delivery Applied!' },
+    AUDIO20PC: { type: 'audioDiscount', description: '50% Audio Discount Applied!' },
+    FLAT200OF: { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' },
+    FLAT99: { type: 'secretDiscount', description: 'Wow, how did you find this? 99% DISCOUNT!!!' }
+  };
+  private cartSubscription?: Subscription;
 
   constructor(
     private cartService: CartService,
@@ -55,7 +62,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       countryCode: ['CZ', Validators.required],
       phoneNumber: ['', [Validators.required, Validators.pattern(this.getPhoneNumberPattern('CZ'))]],
-      deliveryMethod: ['branch'],
+      deliveryMethod: ['branch' as DeliveryMethod],
       paymentMethod: ['creditCard'],
       isStudent: [false],
       specialOfferCode: ['']
@@ -63,44 +70,44 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscribeToCart();
+    this.setupFormSubscriptions();
+  }
+
+  ngOnDestroy(): void {
+    this.cartSubscription?.unsubscribe();
+  }
+
+  private subscribeToCart(): void {
     this.cartSubscription = this.cartService.cart$.subscribe(cart => {
       this.cart = cart;
       this.calculateTotals();
+      this.cdr.detectChanges();
     });
-    this.calculateTotals();
+  }
 
+  private setupFormSubscriptions(): void {
     this.checkoutForm.get('specialOfferCode')?.valueChanges.subscribe(() => {
       this.validateAndApplySpecialOffer();
     });
-    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(isStudent => {
-      const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
-      const age = this.calculateAge(dateOfBirth);
 
-      if (isStudent && age > 65) {
-        // Prevent student discount if senior discount applies
+    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(isStudent => {
+      if (isStudent && this.isSenior()) {
         this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
         alert('Senior discount cannot be used with the student discount.');
       }
-
       this.validateAndApplySpecialOffer();
       this.calculateTotals();
       this.cdr.detectChanges();
     });
 
     this.checkoutForm.get('countryCode')?.valueChanges.subscribe(countryCode => {
-      const phoneControl = this.checkoutForm.get('phoneNumber');
-      phoneControl?.setValidators([
+      this.checkoutForm.get('phoneNumber')?.setValidators([
         Validators.required,
         Validators.pattern(this.getPhoneNumberPattern(countryCode))
       ]);
-      phoneControl?.updateValueAndValidity();
+      this.checkoutForm.get('phoneNumber')?.updateValueAndValidity();
     });
-  }
-
-  ngOnDestroy(): void {
-    if (this.cartSubscription) {
-      this.cartSubscription.unsubscribe();
-    }
   }
 
   toggleCart(): void {
@@ -108,7 +115,17 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  calculateAge(dateOfBirth: string): number {
+  onDateOfBirthBlur(): void {
+    if (this.isSenior() && this.checkoutForm.get('isStudent')?.value) {
+      this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
+      alert('Senior discount cannot be used with the student discount.');
+    }
+    this.validateAndApplySpecialOffer();
+    this.calculateTotals();
+    this.cdr.detectChanges();
+  }
+
+  private calculateAge(dateOfBirth: string): number {
     if (!dateOfBirth) return 0;
     const birthDate = new Date(dateOfBirth);
     const today = new Date();
@@ -120,44 +137,26 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     return age;
   }
 
-  onDateOfBirthBlur(): void {
-    const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
-    const isStudent = this.checkoutForm.get('isStudent')?.value;
-    const age = this.calculateAge(dateOfBirth);
-
-    if (age >= 64 && isStudent) {
-      // Uncheck student discount and apply senior discount
-      this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
-      alert('Senior discount cannot be used with the student discount.');
-    }
-
-    // Revalidate special offer code when age changes
-    this.validateAndApplySpecialOffer();
-    this.calculateTotals();
-    this.cdr.detectChanges();
+  private isSenior(): boolean {
+    return this.calculateAge(this.checkoutForm.get('dateOfBirth')?.value) >= 64;
   }
 
-  validateAndApplySpecialOffer(): void {
+  private validateAndApplySpecialOffer(): void {
     const code = this.checkoutForm.get('specialOfferCode')?.value?.trim().toUpperCase();
     const isStudent = this.checkoutForm.get('isStudent')?.value;
-    const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
-    const age = this.calculateAge(dateOfBirth);
 
-    // Reset the applied offer
     this.appliedOffer = null;
     this.specialOfferDiscount = 0;
 
-    // If student discount is active, special offers cannot be applied
-    if (isStudent  || age >= 64) {
+    if (isStudent || this.isSenior()) {
       if (code && this.specialOfferCodes[code]) {
-        this.checkoutForm.get('specialOfferCode')?.setValue(''); // Clear the code
+        this.checkoutForm.get('specialOfferCode')?.setValue('');
         alert('Special offer codes cannot be used with the student or senior discount.');
       }
       this.calculateTotals();
       return;
     }
 
-    // Validate the code
     if (code && this.specialOfferCodes[code]) {
       this.appliedOffer = this.specialOfferCodes[code];
     } else if (code) {
@@ -166,80 +165,68 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     this.calculateTotals();
   }
 
-  calculateTotals(): void {
-    // Calculate subtotal
-    this.cartSubtotal = this.cart.reduce((total, item) => total + (item.product.price * item.quantity), 0);
+  private calculateTotals(): void {
+    this.cartSubtotal = this.cart.reduce((total, item) => total + item.product.price * item.quantity, 0);
+    this.calculateDeliveryFee();
+    this.calculateDiscounts();
+    this.adjustDiscounts();
+    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - 
+                 this.studentDiscount - this.seniorDiscount - this.specialOfferDiscount;
+  }
 
-    // Calculate delivery fee
-    const deliveryMethod = this.checkoutForm.get('deliveryMethod')?.value;
-    switch (deliveryMethod) {
-      case 'branch':
-        this.deliveryFee = 0;
-        break;
-      case 'box':
-        this.deliveryFee = 79;
-        break;
-      case 'home':
-        this.deliveryFee = 149;
-        break;
-      default:
-        this.deliveryFee = 0;
-    }
+  private calculateDeliveryFee(): void {
+    const deliveryMethod = this.checkoutForm.get('deliveryMethod')?.value as DeliveryMethod;
+    const deliveryFees: Record<DeliveryMethod, number> = {
+      branch: 0,
+      box: 79,
+      home: 149
+    };
+    this.deliveryFee = deliveryFees[deliveryMethod] || 0;
+
     if (this.appliedOffer?.type === 'freeDelivery') {
       this.deliveryFee = 0;
     }
+  }
 
-    // Calculate discounts
+  private calculateDiscounts(): void {
     const paymentMethod = this.checkoutForm.get('paymentMethod')?.value;
     const isStudent = this.checkoutForm.get('isStudent')?.value;
-    const dateOfBirth = this.checkoutForm.get('dateOfBirth')?.value;
-    const age = this.calculateAge(dateOfBirth);
 
-    this.creditCardDiscount = 0;
-    this.studentDiscount = 0;
-    this.seniorDiscount = 0;
-    this.specialOfferDiscount = 0;
+    this.creditCardDiscount = paymentMethod === 'creditCard' ? this.cartSubtotal * 0.05 : 0;
+    this.studentDiscount = isStudent ? this.cartSubtotal * 0.15 : 0;
+    this.seniorDiscount = !isStudent && this.isSenior() ? this.cartSubtotal * 0.10 : 0;
+    this.specialOfferDiscount = this.calculateSpecialOfferDiscount();
+  }
 
-    if (paymentMethod === 'creditCard') {
-      this.creditCardDiscount = this.cartSubtotal * 0.05;
+  private calculateSpecialOfferDiscount(): number {
+    if (!this.appliedOffer || this.checkoutForm.get('isStudent')?.value) return 0;
+
+    switch (this.appliedOffer.type) {
+      case 'audioDiscount':
+        const audioSubtotal = this.cart
+          .filter(item => item.product.category?.toLowerCase() === 'audio')
+          .reduce((total, item) => total + item.product.price * item.quantity, 0);
+        return audioSubtotal * 0.20;
+      case 'flatDiscount':
+        return 200;
+      case 'secretDiscount':
+        return this.cartSubtotal * 0.99;
+      default:
+        return 0;
     }
+  }
 
-    if (isStudent) {
-      this.studentDiscount = this.cartSubtotal * 0.15;
-    } else if (age >= 64) {
-      this.seniorDiscount = this.cartSubtotal * 0.10;
-    }
-
-    if (!isStudent && this.appliedOffer) {
-      if (this.appliedOffer.type === 'audioDiscount') {
-        const audioItems = this.cart.filter(item => 
-          item.product.category && 
-          item.product.category.toLowerCase() === 'audio' // Exact match for "audio"
-        );
-        const audioSubtotal = audioItems.reduce((total, item) => 
-          total + (item.product.price * item.quantity), 0
-        );
-        this.specialOfferDiscount = audioSubtotal * 0.20; // 20% discount on audio products
-      } else if (this.appliedOffer.type === 'flatDiscount') {
-        this.specialOfferDiscount = 200; // Flat $200 discount
-      } else if (this.appliedOffer.type === 'secretDiscount') {
-        this.specialOfferDiscount = this.cartSubtotal * 0.99;
-      }
-    }
-
-    // Ensure discounts don't exceed subtotal
-    const totalDiscount = this.creditCardDiscount + this.studentDiscount + this.specialOfferDiscount;
-    if (totalDiscount > this.cartSubtotal) {
-      this.creditCardDiscount = (this.creditCardDiscount / totalDiscount) * this.cartSubtotal;
-      this.studentDiscount = (this.studentDiscount / totalDiscount) * this.cartSubtotal;
-      this.seniorDiscount = (this.seniorDiscount / totalDiscount) * this.cartSubtotal;
-      this.specialOfferDiscount = (this.specialOfferDiscount / totalDiscount) * this.cartSubtotal;
-    }
-
-    // Calculate total
-    this.total = this.cartSubtotal + this.deliveryFee - this.creditCardDiscount - this.studentDiscount - this.seniorDiscount - this.specialOfferDiscount;
-    console.log(age); 
+  private adjustDiscounts(): void {
+    const totalDiscount = this.creditCardDiscount + this.studentDiscount + 
+                         this.seniorDiscount + this.specialOfferDiscount;
     
+    if (totalDiscount > this.cartSubtotal) {
+      const scale = this.cartSubtotal / totalDiscount;
+      this.creditCardDiscount *= scale;
+      this.studentDiscount *= scale;
+      this.seniorDiscount *= scale;
+      this.specialOfferDiscount *= scale;
+    }
   }
 
   updateDeliveryFee(): void {
@@ -251,106 +238,81 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   confirmOrder(): void {
-    if (this.checkoutForm.valid) {
-      const invalidProducts = this.cart.filter(item => item.product.default === false);
-      if (invalidProducts.length > 0) {
-        // Create error message listing product names
-        const productNames = invalidProducts.map(item => item.product.name).join(', ');
-        alert(`The following products cannot be bought: ${productNames}`);
-        this.cdr.detectChanges(); // Ensure UI updates
-        return; // Stop order confirmation
-      }
+    if (!this.checkoutForm.valid) return;
 
-      for (const item of this.cart) {
-        const availableStock = this.productService.getStock(item.product.id);
-        if (item.quantity > availableStock) {
-          alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
-          return;
-        }
-      }
-
-      this.orderDetails = {
-        ...this.checkoutForm.value,
-        cart: this.cart,
-        cartSubtotal: this.cartSubtotal,
-        deliveryFee: this.deliveryFee,
-        creditCardDiscount: this.creditCardDiscount,
-        studentDiscount: this.studentDiscount,
-        total: this.total
-      };
-      this.cart.forEach(item => {
-        this.productService.reduceStock(item.product.id, item.quantity);
-      });
-      
-      this.cartService.clearCart();
-      this.orderConfirmed = true;
-      if (this.cartSubscription) {
-        this.cartSubscription.unsubscribe();
-      }
+    const invalidProducts = this.cart.filter(item => !item.product.default);
+    if (invalidProducts.length > 0) {
+      alert(`The following products cannot be bought: ${invalidProducts.map(item => item.product.name).join(', ')}`);
       this.cdr.detectChanges();
+      return;
     }
+
+    for (const item of this.cart) {
+      const availableStock = this.productService.getStock(item.product.id);
+      if (item.quantity > availableStock) {
+        alert(`Cannot complete order: Only ${availableStock} units of ${item.product.name} are available, but you ordered ${item.quantity}.`);
+        return;
+      }
+    }
+
+    this.orderDetails = {
+      ...this.checkoutForm.value,
+      cart: this.cart,
+      cartSubtotal: this.cartSubtotal,
+      deliveryFee: this.deliveryFee,
+      creditCardDiscount: this.creditCardDiscount,
+      studentDiscount: this.studentDiscount,
+      total: this.total
+    };
+
+    this.cart.forEach(item => this.productService.reduceStock(item.product.id, item.quantity));
+    this.cartService.clearCart();
+    this.orderConfirmed = true;
+    this.cartSubscription?.unsubscribe();
+    this.cdr.detectChanges();
   }
 
   getDeliveryMethodLabel(method: string): string {
-    switch (method) {
-      case 'branch':
-        return 'Pick up at the branch';
-      case 'box':
-        return 'Delivery to box';
-      case 'home':
-        return 'Delivery to home';
-      default:
-        return 'Unknown';
-    }
+    const labels: Record<string, string> = {
+      branch: 'Pick up at the branch',
+      box: 'Delivery to box',
+      home: 'Delivery to home'
+    };
+    return labels[method] || 'Unknown';
   }
 
   getPaymentMethodLabel(method: string): string {
-    switch (method) {
-      case 'creditCard':
-        return 'Credit Card';
-      case 'cash':
-        return 'Cash';
-      case 'paypal':
-        return 'PayPal';
-      default:
-        return 'Unknown';
-    }
+    const labels: Record<string, string> = {
+      creditCard: 'Credit Card',
+      cash: 'Cash',
+      paypal: 'PayPal'
+    };
+    return labels[method] || 'Unknown';
   }
 
   getPhoneNumberPattern(countryCode: string): string {
-    switch (countryCode) {
-      case 'CZ':
-      case 'SK':
-        return '^[0-9]{9}$'; // 9 digits, e.g., 123456789
-      case 'PL':
-        return '^[0-9]{9}$'; // 9 digits, e.g., 123456789
-      case 'AT':
-        return '^[0-9]{7,13}$'; // 7-13 digits, accommodates various formats
-      case 'DE':
-        return '^[0-9]{10,11}$'; // 10-11 digits, e.g., 01234567890
-      default:
-        return '^[0-9,d]{7,15}$'; // Fallback: 7-15 digits
-    }
+    const patterns: Record<string, string> = {
+      CZ: '^[0-9]{9}$',
+      SK: '^[0-9]{9}$',
+      PL: '^[0-9]{9}$',
+      AT: '^[0-9]{7,13}$',
+      DE: '^[0-9]{10,11}$'
+    };
+    return patterns[countryCode] || '^[0-9]{7,15}$';
   }
 
   getCountryCodeDisplay(countryCode?: string): string {
     const code = countryCode || this.checkoutForm.get('countryCode')?.value;
-    switch (code) {
-      case 'CZ':
-        return '+420';
-      case 'SK':
-        return '+421';
-      case 'PL':
-        return '+48';
-      case 'AT':
-        return '+43';
-      case 'DE':
-        return '+49';
-      default:
-        return '+420';
-    }
+    const prefixes: Record<string, string> = {
+      CZ: '+420',
+      SK: '+421',
+      PL: '+48',
+      AT: '+43',
+      DE: '+49'
+    };
+    return prefixes[code] || '+420';
   }
-  
+
   updateCountryCode(): void {
     this.cdr.detectChanges();
   }
