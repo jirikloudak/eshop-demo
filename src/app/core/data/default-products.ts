@@ -9,7 +9,7 @@ export const defaultProducts: Product[] = [
     stock: 25, 
     imageUrl: '/assets/images/headphones_image.jpg',
     color: 'Black',
-    description: 'Vysoce kvalitní sluchátka přes uši s pokročilou technologií potlačení hluku, která zajišťuje nerušený poslech i v hlučném prostředí. Sluchátka jsou vybavena měkkými náušníky z paměťové pěny, která se přizpůsobí tvaru vaší hlavy, a výkonnými 40mm měniči, které poskytují hluboké basy, čisté středy a jasné výšky. Díky dlouhé výdrži baterie až 30 hodin a možnosti rychlého nabíjení jsou ideální pro cestování, práci i relaxaci.',
+    description: 'High-quality over-ear headphones with advanced noise-canceling technology, ensuring uninterrupted listening even in noisy environments. The headphones feature soft memory foam ear cushions that adapt to the shape of your head and powerful 40mm drivers delivering deep bass, clear mids, and crisp highs. With up to 30 hours of battery life and fast charging, they’re perfect for travel, work, and relaxation.',
     brand: 'SoundMaster',
     default: true
   },
@@ -21,7 +21,7 @@ export const defaultProducts: Product[] = [
     stock: 50, 
     imageUrl: '/assets/images/mouse_image.jpg',
     color: 'Gray',
-    description: 'Lehká bezdrátová myš s ergonomickým designem navržená pro celodenní pohodlné používání. Nabízí přesné snímání pohybu díky optickému senzoru s rozlišením až 1600 DPI. Díky tichým tlačítkům a spolehlivému bezdrátovému připojení přes USB přijímač je ideální pro kancelářské prostředí nebo práci z domova. Baterie vydrží až 12 měsíců bez nutnosti výměny.',
+    description: 'Lightweight wireless mouse with an ergonomic design for all-day comfortable use. Offers precise movement tracking with an optical sensor up to 1600 DPI. With quiet buttons and a reliable wireless connection via USB receiver, it’s ideal for office settings or working from home. The battery lasts up to 12 months without replacement.',
     brand: 'ClickPro',
     default: true
   },
@@ -33,7 +33,7 @@ export const defaultProducts: Product[] = [
     stock: 10, 
     imageUrl: '/assets/images/monitor_image.jpg',
     color: 'Black',
-    description: 'Tento 27palcový LED monitor s rozlišením 4K Ultra HD nabízí neuvěřitelně ostrý obraz a živé barvy, ideální pro profesionální grafiky, editory videa i běžné uživatele. Monitor podporuje HDR, má široké pozorovací úhly a tenké rámečky, které umožňují vícemonitorové sestavy. Díky portům HDMI, DisplayPort a USB-C je velmi univerzální.',
+    description: 'This 27-inch LED monitor with 4K Ultra HD resolution offers incredibly sharp images and vibrant colors, ideal for professional graphic designers, video editors, and everyday users. The monitor supports HDR, has wide viewing angles, and slim bezels for multi-monitor setups. With HDMI, DisplayPort, and USB-C ports, it’s highly versatile.',
     brand: 'ViewMax',
     default: true
   },
@@ -45,7 +45,7 @@ export const defaultProducts: Product[] = [
     stock: 35, 
     imageUrl: '/assets/images/disk_image.jpg',
     color: 'Silver',
-    description: 'Přenosný SSD disk s kapacitou 1 TB a vysokou rychlostí přenosu dat až 1050 MB/s. Kompaktní hliníkové tělo zajišťuje vysokou odolnost proti nárazům a snadné přenášení. Kompatibilní s Windows, Mac i Android zařízeními přes USB-C. Ideální pro zálohování důležitých souborů, práci s velkými daty nebo přenášení multimédií.',
+    description: 'Portable SSD with a capacity of 1TB and high data transfer speeds up to 1050 MB/s. Its compact aluminum body ensures high shock resistance and easy portability. Compatible with Windows, Mac, and Android devices via USB-C. Ideal for backing up important files, working with large data sets, or transferring multimedia.',
     brand: 'DataRush',
     default: true
   },
@@ -57,7 +57,7 @@ export const defaultProducts: Product[] = [
     stock: 40, 
     imageUrl: '/assets/images/smart_watch_image.jpg',
     color: 'Blue',
-    description: 'Elegantní fitness náramek, který sleduje vaši aktivitu, spánek, srdeční tep i úroveň stresu během dne. Disponuje barevným dotykovým displejem a aplikací pro Android/iOS, která zaznamenává veškeré údaje. Nabízí různé sportovní režimy, voděodolnost IP68 a výdrž baterie až 10 dní na jedno nabití.',
+    description: 'Elegant fitness band that tracks your activity, sleep, heart rate, and stress levels throughout the day. Features a color touchscreen and an Android/iOS app that records all data. Offers various sports modes, IP68 water resistance, and up to 10 days of battery life on a single charge.',
     brand: 'FitPro',
     default: true
   },
@@ -69,7 +69,7 @@ export const defaultProducts: Product[] = [
     stock: 15, 
     imageUrl: '/assets/images/drone_image.jpg',
     color: 'White',
-    description: 'Kompaktní dron vhodný pro děti i dospělé. Nabízí HD kameru pro základní záznamy a živý přenos videa do mobilního zařízení. Stabilizace letu, automatický vzlet a přistání, funkce "follow me" a snadné ovládání přes aplikaci nebo dálkový ovladač. Perfektní pro začátečníky, kteří si chtějí vyzkoušet létání.',
+    description: 'Compact drone suitable for kids and adults. Offers an HD camera for basic recordings and live video streaming to a mobile device. Features flight stabilization, automatic takeoff and landing, "follow me" mode, and easy controls via an app or remote controller. Perfect for beginners wanting to try flying.',
     brand: 'SkyFly',
     default: true
   },
@@ -81,7 +81,7 @@ export const defaultProducts: Product[] = [
     stock: 60, 
     imageUrl: '/assets/images/light_bulb_image.jpg',
     color: 'Multicolor',
-    description: 'Chytrá žárovka s Wi-Fi připojením, která vám umožní ovládat osvětlení přes mobilní aplikaci nebo hlasové asistenty jako Alexa a Google Assistant. Nabízí nastavitelnou barevnou teplotu, tisíce barev a plánování zapnutí/vypnutí. Ideální pro moderní domácnosti a chytré osvětlení bez složité instalace.',
+    description: 'Smart bulb with Wi-Fi connectivity allowing you to control lighting via a mobile app or voice assistants like Alexa and Google Assistant. Offers adjustable color temperature, thousands of colors, and on/off scheduling. Ideal for modern households and smart lighting without complicated installation.',
     brand: 'GlowTech',
     default: true
   },
@@ -93,7 +93,7 @@ export const defaultProducts: Product[] = [
     stock: 20, 
     imageUrl: '/assets/images/speaker_image.jpg',
     color: 'Red',
-    description: 'Kompaktní přenosný reproduktor s Bluetooth 5.0 technologií a výdrží baterie až 12 hodin. Disponuje voděodolností IPX5, což z něj dělá ideálního parťáka na výlety, pláž nebo do sprchy. Silný zvuk s hlubokými basy a možností propojení dvou reproduktorů pro stereo efekt.',
+    description: 'Compact portable speaker with Bluetooth 5.0 technology and up to 12 hours of battery life. IPX5 water resistance makes it the perfect companion for trips, the beach, or the shower. Strong sound with deep bass and the option to pair two speakers for a stereo effect.',
     brand: 'BoomBeat',
     default: true
   },
@@ -105,7 +105,7 @@ export const defaultProducts: Product[] = [
     stock: 12, 
     imageUrl: '/assets/images/smartphone_image.jpg',
     color: 'Silver',
-    description: 'Výkonný smartphone s 6.5" AMOLED displejem, osmijádrovým procesorem, 128 GB úložištěm a 48MP duálním fotoaparátem. Nabízí podporu 5G, NFC, čtečku otisků prstů pod displejem a rychlé 33W nabíjení. Perfektní kombinace výkonu a designu pro každodenní použití i multimediální zábavu.',
+    description: 'Powerful smartphone with a 6.5" AMOLED display, octa-core processor, 128GB storage, and 48MP dual camera. Offers 5G support, NFC, under-display fingerprint reader, and fast 33W charging. A perfect blend of performance and design for everyday use and multimedia entertainment.',
     brand: 'TechNova',
     default: true
   },
@@ -117,7 +117,7 @@ export const defaultProducts: Product[] = [
     stock: 8, 
     imageUrl: '/assets/images/camera_image.jpg',
     color: 'Black',
-    description: 'Profesionální digitální zrcadlovka s 24MP APS-C senzorem, optickým hledáčkem a možností natáčení videí ve Full HD. Ideální pro nadšené fotografy a začínající profesionály. Podporuje výměnné objektivy, má rychlé ostření a dlouhou výdrž baterie pro focení i na cestách.',
+    description: 'Professional digital SLR camera with a 24MP APS-C sensor, optical viewfinder, and Full HD video recording. Ideal for passionate photographers and aspiring professionals. Supports interchangeable lenses, fast autofocus, and long battery life for on-the-go photography.',
     brand: 'PhotoPro',
     default: true
   },
@@ -129,7 +129,7 @@ export const defaultProducts: Product[] = [
     stock: 45, 
     imageUrl: '/assets/images/keyboard_image.jpg',
     color: 'Black',
-    description: 'Mechanická herní klávesnice s RGB podsvícením, antighostingem a programovatelnými klávesami. Odolná konstrukce a rychlá odezva z ní dělají ideální volbu pro náročné hráče. Podporuje více režimů osvětlení a makra pro pokročilé nastavení.',
+    description: 'Mechanical gaming keyboard with RGB backlighting, anti-ghosting, and programmable keys. Durable construction and fast response make it the perfect choice for demanding gamers. Supports multiple lighting modes and macros for advanced customization.',
     brand: 'KeyBlaze',
     default: true
   },
@@ -141,7 +141,7 @@ export const defaultProducts: Product[] = [
     stock: 30, 
     imageUrl: '/assets/images/earbuds_image.jpg',
     color: 'White',
-    description: 'Kompaktní bezdrátová sluchátka s čistým zvukem, potlačením okolního hluku a výdrží až 6 hodin přehrávání na jedno nabití (až 24 hodin s nabíjecím pouzdrem). Dotykové ovládání, odolnost proti potu (IPX4) a pohodlné nošení je činí skvělými pro sport i každodenní použití.',
+    description: 'Compact wireless earbuds with clear sound, noise isolation, and up to 6 hours of playback on a single charge (up to 24 hours with the charging case). Touch controls, sweat resistance (IPX4), and comfortable fit make them great for sports and daily use.',
     brand: 'SoundMaster',
     default: true
   },
@@ -153,7 +153,7 @@ export const defaultProducts: Product[] = [
     stock: 25, 
     imageUrl: '/assets/images/robot_toy_image.jpg',
     color: 'Yellow',
-    description: 'Interaktivní robotická hračka pro děti od 3 let, která mluví, tancuje, svítí a reaguje na dotyk. Nabízí zábavu i výuku díky hravým režimům a možnostem interakce. Vyroben z bezpečných a odolných materiálů. Pomáhá rozvíjet kreativitu a jemnou motoriku.',
+    description: 'Interactive robot toy for children from 3 years old that talks, dances, lights up, and responds to touch. Offers both fun and educational modes with interactive features. Made from safe and durable materials. Helps develop creativity and fine motor skills.',
     brand: 'PlayBot',
     default: true
   },
@@ -165,7 +165,7 @@ export const defaultProducts: Product[] = [
     stock: 18, 
     imageUrl: '/assets/images/smart_thermostat_image.jpg',
     color: 'White',
-    description: 'Chytrý termostat, který se učí vaše zvyky a pomáhá optimalizovat spotřebu energie v domácnosti. Ovládání přes mobilní aplikaci, plánování teploty, geolokace a podpora hlasových asistentů. Kompatibilní s většinou topných systémů.',
+    description: 'Smart thermostat that learns your habits and helps optimize household energy consumption. Control via mobile app, temperature scheduling, geolocation, and voice assistant support. Compatible with most heating systems.',
     brand: 'ClimaTech',
     default: true
   },
@@ -175,9 +175,9 @@ export const defaultProducts: Product[] = [
     category: 'Accessories', 
     price: 24.99, 
     stock: 70, 
-    imageUrl: '/assets/images/charger _image.jpg',
+    imageUrl: '/assets/images/charger_image.jpg',
     color: 'Black',
-    description: 'Elegantní bezdrátová nabíječka kompatibilní s technologií Qi, vhodná pro většinu moderních smartphonů. Nabízí rychlé nabíjení až 15W, LED indikátor stavu nabití a protiskluzový povrch. Bezpečnostní prvky zabraňují přehřátí nebo přebíjení zařízení.',
+    description: 'Elegant wireless charger compatible with Qi technology, suitable for most modern smartphones. Offers fast charging up to 15W, LED charge status indicator, and non-slip surface. Safety features prevent overheating or overcharging of devices.',
     brand: 'ChargeX',
     default: true
   },
