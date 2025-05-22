@@ -7,7 +7,7 @@ export const defaultProducts: Product[] = [
     category: 'Audio', 
     price: 150, 
     stock: 25, 
-    imageUrl: '/assets/images/headphones_image.jpg',
+    imageUrl: 'assets/images/headphones_image.jpg',
     color: 'Black',
     description: 'High-quality over-ear headphones with advanced noise-canceling technology, ensuring uninterrupted listening even in noisy environments. The headphones feature soft memory foam ear cushions that adapt to the shape of your head and powerful 40mm drivers delivering deep bass, clear mids, and crisp highs. With up to 30 hours of battery life and fast charging, they’re perfect for travel, work, and relaxation.',
     brand: 'SoundMaster',
