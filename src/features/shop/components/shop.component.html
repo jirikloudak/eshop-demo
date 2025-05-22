@@ -1,6 +1,5 @@
-<div class="e-shop-container">
-  <app-header (toggleCartEvent)="toggleCart()"></app-header>
-
+<app-header (toggleCartEvent)="toggleCart()"></app-header>
+<main class="e-shop-container">
   <div class="shop-layout">
     <aside class="categories-sidebar">
       <h3>Categories</h3>
@@ -26,59 +25,59 @@
     </aside>
 
     <div class="main-content">
-      <main>
-        <div class="products-grid">
-          <div *ngFor="let product of filteredProducts" class="product-card">
-            <a [routerLink]="['/product', product.id]" class="product-link">
-              <img [src]="product.imageUrl" [alt]="product.name" class="product-image" [ngStyle]="product.imageUrl === '/assets/images/smart_thermostat_image2.jpg' ? {'width': '300px', 'height': '300px'} : {}">
-              <h3>{{ product.name }}</h3>
-              <p class="price">{{ product.price.toFixed(2) }},-</p>
-              <p class="stock-status" [ngClass]="{'out-of-stock': product.stock === 0}">
-                {{ product.stock > 0 ? 'In stock: ' + product.stock : 'Out of stock' }}
-              </p>  
-            </a>
-            <button *ngIf="!isInCart(product)" class="add-to-cart" 
-                    [ngClass]="{'non-default': !product.default}" 
-                    (click)="addToCart(product)" 
-                    [disabled]="product.stock === 0">Add to Cart</button>
-            <span *ngIf="isInCart(product)" class="added-to-cart">Added to Cart</span>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
-  
-    <div *ngIf="showCart" class="cart-overlay">
-      <div class="cart-panel">
-        <div class="cart-header">
-          <h2>Your Cart</h2>
-          <button class="clear-cart" (click)="clearCart()">Clear Cart</button>
-          <button class="close-cart" (click)="toggleCart()">×</button>
-        </div>
-        
-          <div class="cart-body">
-            <p *ngIf="cart.length === 0" class="empty-cart">Your cart is empty</p>
-            
-            <div *ngIf="cart.length > 0" class="cart-items">
-              <div *ngFor="let item of cart" class="cart-item">
-                <img [src]="item.product.imageUrl" [alt]="item.product.name" class="cart-item-image">
-                <div class="cart-item-details">
-                  <h3>{{ item.product.name }}</h3>
-                  <p>$ {{ item.product.price.toFixed(2) }} × {{ item.quantity }}</p>
-                </div>
-                <div class="cart-item-controls">
-                  <button (click)="decreaseQuantity(item)">-</button>
-                  <span>{{ item.quantity }}</span>
-                  <button (click)="increaseQuantity(item)">+</button>
-                </div>
-              </div>
-            </div>
-        </div>
-        
-        <div *ngIf="cart.length > 0" class="cart-summary">
-          <p>Total: <strong>€ {{ cartTotal.toFixed(2) }}</strong></p>
-          <button class="checkout-button" [routerLink]="['/checkout']">Checkout</button>
+      <div class="products-grid">
+        <div *ngFor="let product of filteredProducts" class="product-card">
+          <a [routerLink]="['/product', product.id]" class="product-link">
+            <img [src]="product.imageUrl" [alt]="product.name" class="product-image" [ngStyle]="product.imageUrl === '/assets/images/smart_thermostat_image2.jpg' ? {'width': '300px', 'height': '300px'} : {}">
+            <h3>{{ product.name }}</h3>
+            <p class="price">{{ product.price.toFixed(2) }},-</p>
+            <p class="stock-status" [ngClass]="{'out-of-stock': product.stock === 0}">
+              {{ product.stock > 0 ? 'In stock: ' + product.stock : 'Out of stock' }}
+            </p>  
+          </a>
+          <button *ngIf="!isInCart(product)" class="add-to-cart" 
+                  [ngClass]="{'non-default': !product.default}" 
+                  (click)="addToCart(product)" 
+                  [disabled]="product.stock === 0">Add to Cart</button>
+          <span *ngIf="isInCart(product)" class="added-to-cart">Added to Cart</span>
         </div>
       </div>
     </div>
   </div>
+</main>
+
+<div *ngIf="showCart" class="cart-overlay">
+  <div class="cart-panel">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="clear-cart" (click)="clearCart()">Clear Cart</button>
+      <button class="close-cart" (click)="toggleCart()">×</button>
+    </div>
+    
+    <div class="cart-body">
+      <p *ngIf="cart.length === 0" class="empty-cart">Your cart is empty</p>
+      
+      <div *ngIf="cart.length > 0" class="cart-items">
+        <div *ngFor="let item of cart" class="cart-item">
+          <img [src]="item.product.imageUrl" [alt]="item.product.name" class="cart-item-image">
+          <div class="cart-item-details">
+            <h3>{{ item.product.name }}</h3>
+            <p>$ {{ item.product.price.toFixed(2) }} × {{ item.quantity }}</p>
+          </div>
+          <div class="cart-item-controls">
+            <button (click)="decreaseQuantity(item)">-</button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="increaseQuantity(item)">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="cart.length > 0" class="cart-summary">
+      <p>Total: <strong>€ {{ cartTotal.toFixed(2) }}</strong></p>
+      <button class="checkout-button" [routerLink]="['/checkout']">Checkout</button>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
