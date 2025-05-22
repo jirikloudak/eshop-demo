@@ -5,12 +5,19 @@
   font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+main {
+  flex: 1;
+} 
+
 .product-detail-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 75px;
   background-color: #ffffff;
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
 }
 
 .product-detail {

@@ -42,7 +42,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   private readonly specialOfferCodes: Record<string, SpecialOffer> = {
     FREESHIP8: { type: 'freeDelivery', description: 'Free Delivery Applied!' },
     AUDIO20PC: { type: 'audioDiscount', description: '50% Audio Discount Applied!' },
-    FLAT200OF: { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' },
+    FLAT20: { type: 'flatDiscount', description: 'Flat $200 Discount Applied!' },
     FLAT99: { type: 'secretDiscount', description: 'Wow, how did you find this? 99% DISCOUNT!!!' }
   };
   private cartSubscription?: Subscription;
@@ -171,8 +171,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     const deliveryMethod = this.checkoutForm.get('deliveryMethod')?.value as DeliveryMethod;
     const deliveryFees: Record<DeliveryMethod, number> = {
       branch: 0,
-      box: 79,
-      home: 149
+      box: 5,
+      home: 15
     };
     this.deliveryFee = deliveryFees[deliveryMethod] || 0;
 
