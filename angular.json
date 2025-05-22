@@ -20,6 +20,7 @@
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
+            "baseHref": "/eshop-demo/",
             "assets": [
               "src/assets",
               {
