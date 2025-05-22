@@ -1,16 +1,13 @@
-
 <header>
   <div class="header-left">
-    <button class="admin-button" [routerLink]="['/admin']">Admin Panel</button>
+    <img src="/assets/images/alzakpng.png" alt="Alzak">
   </div>
   <a [routerLink]="['/']" class="shop-link">
-    <h1 class="shop-title">
-      Demo E-Shop
-    </h1>
+    <h1 class="shop-title">Demo E-Shop</h1>
   </a>
   <div class="header-right">
     <div class="cart-widget" *ngIf="shouldShowCart()" (click)="toggleCart()">
-      🛒 Cart 
+      🛒 Cart
       <span *ngIf="totalItems > 0" class="cart-count">{{ totalItems }}</span>
     </div>
   </div>

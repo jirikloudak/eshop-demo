@@ -10,6 +10,7 @@
   margin: 0 auto;
   padding: 75px;
   background-color: #ffffff;
+  flex: 1;
 }
 
 .product-detail {

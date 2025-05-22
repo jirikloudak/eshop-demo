@@ -8,11 +8,12 @@ import { ProductService } from '@core/services/product.service';
 import { ReactiveFormsModule, FormControl } from '@angular/forms';
 import { HeaderComponent } from '@core/components/header/header.component';
 import { BasePageComponent } from '@core/components/base-page.component';
+import { FooterComponent } from '@core/components/footer/footer.component';
 
 @Component({
   selector: 'app-shop',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, HeaderComponent  ],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, HeaderComponent, FooterComponent  ],
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })

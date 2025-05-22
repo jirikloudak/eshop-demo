@@ -5,12 +5,13 @@ import { RouterLink } from '@angular/router';
 import { ProductService } from '@core/services/product.service';
 import { Product } from '@core/models/product.model';
 import { Image, defaultImages } from '@core/data/default-images';
+import { FooterComponent } from '@core/components/footer/footer.component';
 import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, FooterComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })

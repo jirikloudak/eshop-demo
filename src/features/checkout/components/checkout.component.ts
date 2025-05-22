@@ -7,6 +7,7 @@ import { CartService } from '@core/services/cart.service';
 import { ProductService } from '@core/services/product.service';
 import { CartItem } from '@core/models/cart-item.model';
 import { HeaderComponent } from '@core/components/header/header.component';
+import { FooterComponent } from '@core/components/footer/footer.component';
 
 interface SpecialOffer {
   type: string;
@@ -18,7 +19,7 @@ type DeliveryMethod = 'branch' | 'box' | 'home';
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, RouterLink, ReactiveFormsModule, HeaderComponent],
+  imports: [CommonModule, RouterLink, ReactiveFormsModule, HeaderComponent, FooterComponent],
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
@@ -91,11 +92,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.validateAndApplySpecialOffer();
     });
 
-    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(isStudent => {
-      if (isStudent && this.isSenior()) {
-        this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
-        alert('Senior discount cannot be used with the student discount.');
-      }
+    this.checkoutForm.get('isStudent')?.valueChanges.subscribe(() => {
       this.validateAndApplySpecialOffer();
       this.calculateTotals();
       this.cdr.detectChanges();
@@ -116,10 +113,6 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   onDateOfBirthBlur(): void {
-    if (this.isSenior() && this.checkoutForm.get('isStudent')?.value) {
-      this.checkoutForm.get('isStudent')?.setValue(false, { emitEvent: false });
-      alert('Senior discount cannot be used with the student discount.');
-    }
     this.validateAndApplySpecialOffer();
     this.calculateTotals();
     this.cdr.detectChanges();
@@ -194,7 +187,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     this.creditCardDiscount = paymentMethod === 'creditCard' ? this.cartSubtotal * 0.05 : 0;
     this.studentDiscount = isStudent ? this.cartSubtotal * 0.15 : 0;
-    this.seniorDiscount = !isStudent && this.isSenior() ? this.cartSubtotal * 0.10 : 0;
+    this.seniorDiscount = this.isSenior() ? this.cartSubtotal * 0.10 : 0;
     this.specialOfferDiscount = this.calculateSpecialOfferDiscount();
   }
 
@@ -293,7 +286,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   getPhoneNumberPattern(countryCode: string): string {
     const patterns: Record<string, string> = {
       CZ: '^[0-9]{9}$',
-      SK: '^[0-9]{9}$',
+      SK: '^[0-9]{8}$',
       PL: '^[0-9]{9}$',
       AT: '^[0-9]{7,13}$',
       DE: '^[0-9]{10,11}$'

@@ -6,11 +6,12 @@ import { CartService } from '@core/services/cart.service';
 import { Product } from '@core/models/product.model';
 import { CartItem } from '@core/models/cart-item.model';
 import { HeaderComponent } from '@core/components/header/header.component';
+import { FooterComponent } from '@core/components/footer/footer.component';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent],
+  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.css']
 })
